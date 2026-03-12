@@ -18,25 +18,25 @@ This project delivers a comprehensive, institutional-grade options trading platf
 ### **System Architecture**
 ```
 streamlit_options_platform/
-├── main.py                     # Main Streamlit application (Multi-page router)
-├── utils/                      # Core utility modules
-│   ├── data_provider.py        # Market data and options chain provider
-│   ├── pricing_engine.py       # Advanced options pricing (Black-Scholes, QuantLib)
-│   ├── portfolio_manager.py    # Portfolio tracking and performance analysis
-│   ├── market_analysis.py      # Market correlation and regime detection
-│   └── visualization.py        # Advanced chart generation utilities
-├── backtesting/                # Professional backtesting framework
-│   ├── backtesting_engine.py   # Core backtesting with realistic simulation
-│   ├── strategy_validator.py   # Statistical validation and overfitting detection
-│   ├── performance_analytics.py # Comprehensive performance measurement
-│   ├── monte_carlo_engine.py   # Monte Carlo simulation engine
-│   └── backtesting_dashboard.py # Interactive backtesting interface
-├── tests/                      # Comprehensive testing infrastructure
-│   ├── test_backtesting.py     # 86+ automated tests
-│   └── run_tests.py           # Automated CI/CD pipeline
-├── strategies/                 # Example trading strategies
-├── demo_data/                  # Sample portfolio and market data
-└── .streamlit/                 # Professional configuration and styling
+├── main.py # Main Streamlit application (Multi-page router)
+├── utils/ # Core utility modules
+│ ├── data_provider.py # Market data and options chain provider
+│ ├── pricing_engine.py # Advanced options pricing (Black-Scholes, QuantLib)
+│ ├── portfolio_manager.py # Portfolio tracking and performance analysis
+│ ├── market_analysis.py # Market correlation and regime detection
+│ └── visualization.py # Advanced chart generation utilities
+├── backtesting/ # Professional backtesting framework
+│ ├── backtesting_engine.py # Core backtesting with realistic simulation
+│ ├── strategy_validator.py # Statistical validation and overfitting detection
+│ ├── performance_analytics.py # Comprehensive performance measurement
+│ ├── monte_carlo_engine.py # Monte Carlo simulation engine
+│ └── backtesting_dashboard.py # Interactive backtesting interface
+├── tests/ # Comprehensive testing infrastructure
+│ ├── test_backtesting.py # 86+ automated tests
+│ └── run_tests.py # Automated CI/CD pipeline
+├── strategies/ # Example trading strategies
+├── demo_data/ # Sample portfolio and market data
+└──.streamlit/ # Professional configuration and styling
 ```
 
 ### **Technology Stack**
@@ -59,16 +59,16 @@ streamlit_options_platform/
 ```python
 # Dynamic page routing with professional navigation
 page = st.selectbox(
-    "Select Trading View",
-    [
-        "📊 Portfolio Dashboard",
-        "🔗 Options Chain",
-        "🌊 Volatility Surface",
-        "📈 Strategy Performance",
-        "🔍 Market Analysis",
-        "⚡ Flow & Alerts",
-        "📊 Risk Management"
-    ]
+ "Select Trading View",
+ [
+ "📊 Portfolio Dashboard",
+ "🔗 Options Chain",
+ "🌊 Volatility Surface",
+ "📈 Strategy Performance",
+ "🔍 Market Analysis",
+ "⚡ Flow & Alerts",
+ "📊 Risk Management"
+ ]
 )
 ```
 
@@ -81,10 +81,10 @@ page = st.selectbox(
 
 **Interview Questions & Answers:**
 - **Q: How does the multi-page system maintain state?**
-  A: Uses Streamlit's `st.session_state` to persist portfolio data, user preferences, and calculated metrics across page transitions.
+ A: Uses Streamlit's `st.session_state` to persist portfolio data, user preferences, and calculated metrics across page transitions.
 
 - **Q: How do you handle performance with multiple pages?**
-  A: Implemented lazy loading with `@st.cache_data` decorators and conditional rendering to only load data when pages are accessed.
+ A: Implemented lazy loading with `@st.cache_data` decorators and conditional rendering to only load data when pages are accessed.
 
 ### **2. Real-Time Options Chain Analysis**
 **File**: `utils/data_provider.py`
@@ -93,43 +93,43 @@ page = st.selectbox(
 **Technical Implementation:**
 ```python
 def get_options_chain(self, symbol: str, expiry_date: str) -> pd.DataFrame:
-    """Generate comprehensive options chain with real-time Greeks"""
+ """Generate comprehensive options chain with real-time Greeks"""
 
-    # Fetch real-time underlying price
-    ticker = yf.Ticker(symbol)
-    current_price = ticker.history(period="1d")['Close'].iloc[-1]
+ # Fetch real-time underlying price
+ ticker = yf.Ticker(symbol)
+ current_price = ticker.history(period="1d")['Close'].iloc[-1]
 
-    # Generate strike range (±20% from current price)
-    strikes = np.arange(current_price * 0.8, current_price * 1.2, 2.5)
+ # Generate strike range (±20% from current price)
+ strikes = np.arange(current_price * 0.8, current_price * 1.2, 2.5)
 
-    options_data = []
-    for strike in strikes:
-        for option_type in ['CALL', 'PUT']:
-            # Calculate theoretical price and Greeks
-            greeks = self._calculate_greeks(current_price, strike, vol, option_type, time_to_expiry)
+ options_data = []
+ for strike in strikes:
+ for option_type in ['CALL', 'PUT']:
+ # Calculate theoretical price and Greeks
+ greeks = self._calculate_greeks(current_price, strike, vol, option_type, time_to_expiry)
 
-            # Add realistic bid-ask spread
-            theo_price = greeks['price']
-            spread = theo_price * 0.02  # 2% spread
-            bid = max(0.01, theo_price - spread/2)
-            ask = theo_price + spread/2
+ # Add realistic bid-ask spread
+ theo_price = greeks['price']
+ spread = theo_price * 0.02 # 2% spread
+ bid = max(0.01, theo_price - spread/2)
+ ask = theo_price + spread/2
 
-            options_data.append({
-                'Strike': strike,
-                'Type': option_type,
-                'Bid': bid,
-                'Ask': ask,
-                'Last': theo_price,
-                'Volume': np.random.randint(10, 1000),
-                'Open_Interest': np.random.randint(100, 5000),
-                'Delta': greeks['delta'],
-                'Gamma': greeks['gamma'],
-                'Theta': greeks['theta'],
-                'Vega': greeks['vega'],
-                'IV': vol
-            })
+ options_data.append({
+ 'Strike': strike,
+ 'Type': option_type,
+ 'Bid': bid,
+ 'Ask': ask,
+ 'Last': theo_price,
+ 'Volume': np.random.randint(10, 1000),
+ 'Open_Interest': np.random.randint(100, 5000),
+ 'Delta': greeks['delta'],
+ 'Gamma': greeks['gamma'],
+ 'Theta': greeks['theta'],
+ 'Vega': greeks['vega'],
+ 'IV': vol
+ })
 
-    return pd.DataFrame(options_data)
+ return pd.DataFrame(options_data)
 ```
 
 **Advanced Features:**
@@ -141,10 +141,10 @@ def get_options_chain(self, symbol: str, expiry_date: str) -> pd.DataFrame:
 
 **Interview Questions & Answers:**
 - **Q: How do you calculate implied volatility in real-time?**
-  A: Use Newton-Raphson iteration method to solve Black-Scholes equation for volatility, with convergence tolerance of 1e-5.
+ A: Use Newton-Raphson iteration method to solve Black-Scholes equation for volatility, with convergence tolerance of 1e-5.
 
 - **Q: How do you handle options with different expiration dates?**
-  A: Calculate time to expiry in years using `(expiry_date - current_date).days / 365.25` for accurate leap year handling.
+ A: Calculate time to expiry in years using `(expiry_date - current_date).days / 365.25` for accurate leap year handling.
 
 ### **3. Interactive 3D Volatility Surface**
 **File**: `utils/visualization.py`
@@ -153,46 +153,46 @@ def get_options_chain(self, symbol: str, expiry_date: str) -> pd.DataFrame:
 **Technical Implementation:**
 ```python
 def create_volatility_surface_3d(self, strikes: List[float], expiries: List[int],
-                                vol_matrix: np.ndarray, symbol: str) -> go.Figure:
-    """Create professional 3D volatility surface with advanced features"""
+ vol_matrix: np.ndarray, symbol: str) -> go.Figure:
+ """Create professional 3D volatility surface with advanced features"""
 
-    # Create meshgrid for 3D surface
-    X, Y = np.meshgrid(strikes, expiries)
+ # Create meshgrid for 3D surface
+ X, Y = np.meshgrid(strikes, expiries)
 
-    fig = go.Figure(data=[
-        go.Surface(
-            x=X,
-            y=Y,
-            z=vol_matrix,
-            colorscale='Viridis',
-            showscale=True,
-            colorbar=dict(
-                title="Implied Volatility",
-                titleside="right",
-                tickmode="linear",
-                tick0=0,
-                dtick=0.05
-            ),
-            contours=dict(
-                z=dict(show=True, usecolormap=True, highlightcolor="limegreen", project_z=True)
-            )
-        )
-    ])
+ fig = go.Figure(data=[
+ go.Surface(
+ x=X,
+ y=Y,
+ z=vol_matrix,
+ colorscale='Viridis',
+ showscale=True,
+ colorbar=dict(
+ title="Implied Volatility",
+ titleside="right",
+ tickmode="linear",
+ tick0=0,
+ dtick=0.05
+ ),
+ contours=dict(
+ z=dict(show=True, usecolormap=True, highlightcolor="limegreen", project_z=True)
+ )
+ )
+ ])
 
-    # Professional styling and camera angle
-    fig.update_layout(
-        title=f'{symbol} Implied Volatility Surface',
-        scene=dict(
-            xaxis_title='Strike Price',
-            yaxis_title='Days to Expiry',
-            zaxis_title='Implied Volatility',
-            camera=dict(eye=dict(x=1.2, y=1.2, z=0.6))
-        ),
-        height=600,
-        font=dict(size=12)
-    )
+ # Professional styling and camera angle
+ fig.update_layout(
+ title=f'{symbol} Implied Volatility Surface',
+ scene=dict(
+ xaxis_title='Strike Price',
+ yaxis_title='Days to Expiry',
+ zaxis_title='Implied Volatility',
+ camera=dict(eye=dict(x=1.2, y=1.2, z=0.6))
+ ),
+ height=600,
+ font=dict(size=12)
+ )
 
-    return fig
+ return fig
 ```
 
 **Advanced Features:**
@@ -205,10 +205,10 @@ def create_volatility_surface_3d(self, strikes: List[float], expiries: List[int]
 
 **Interview Questions & Answers:**
 - **Q: How do you generate realistic volatility surfaces?**
-  A: Use Heston model parameters with mean reversion, volatility clustering, and smile effects based on moneyness.
+ A: Use Heston model parameters with mean reversion, volatility clustering, and smile effects based on moneyness.
 
 - **Q: How do you handle missing data points in the surface?**
-  A: Use cubic spline interpolation with boundary conditions to fill gaps while maintaining smooth surfaces.
+ A: Use cubic spline interpolation with boundary conditions to fill gaps while maintaining smooth surfaces.
 
 ### **4. Portfolio Greeks Dashboard**
 **File**: `utils/portfolio_manager.py`
@@ -217,49 +217,49 @@ def create_volatility_surface_3d(self, strikes: List[float], expiries: List[int]
 **Technical Implementation:**
 ```python
 def get_portfolio_greeks(self) -> Dict[str, float]:
-    """Calculate real-time portfolio Greeks with position weighting"""
+ """Calculate real-time portfolio Greeks with position weighting"""
 
-    total_delta = 0
-    total_gamma = 0
-    total_theta = 0
-    total_vega = 0
-    total_rho = 0
+ total_delta = 0
+ total_gamma = 0
+ total_theta = 0
+ total_vega = 0
+ total_rho = 0
 
-    for position in self.positions:
-        # Get current market data
-        current_price = self.data_provider.get_current_price(position.symbol)
+ for position in self.positions:
+ # Get current market data
+ current_price = self.data_provider.get_current_price(position.symbol)
 
-        # Calculate time to expiry
-        time_to_expiry = (position.expiry - datetime.now()).days / 365.25
+ # Calculate time to expiry
+ time_to_expiry = (position.expiry - datetime.now()).days / 365.25
 
-        if time_to_expiry > 0:
-            # Calculate position Greeks
-            greeks = self.pricing_engine.calculate_greeks(
-                spot=current_price,
-                strike=position.strike,
-                volatility=position.implied_vol,
-                time_to_expiry=time_to_expiry,
-                option_type=position.option_type,
-                risk_free_rate=self.risk_free_rate
-            )
+ if time_to_expiry > 0:
+ # Calculate position Greeks
+ greeks = self.pricing_engine.calculate_greeks(
+ spot=current_price,
+ strike=position.strike,
+ volatility=position.implied_vol,
+ time_to_expiry=time_to_expiry,
+ option_type=position.option_type,
+ risk_free_rate=self.risk_free_rate
+ )
 
-            # Weight by position size (100 shares per contract)
-            position_multiplier = position.quantity * 100
+ # Weight by position size (100 shares per contract)
+ position_multiplier = position.quantity * 100
 
-            total_delta += greeks['delta'] * position_multiplier
-            total_gamma += greeks['gamma'] * position_multiplier
-            total_theta += greeks['theta'] * position_multiplier
-            total_vega += greeks['vega'] * position_multiplier
-            total_rho += greeks['rho'] * position_multiplier
+ total_delta += greeks['delta'] * position_multiplier
+ total_gamma += greeks['gamma'] * position_multiplier
+ total_theta += greeks['theta'] * position_multiplier
+ total_vega += greeks['vega'] * position_multiplier
+ total_rho += greeks['rho'] * position_multiplier
 
-    return {
-        'delta': total_delta,
-        'gamma': total_gamma,
-        'theta': total_theta,
-        'vega': total_vega,
-        'rho': total_rho,
-        'net_liquidity': self.calculate_net_liquidity()
-    }
+ return {
+ 'delta': total_delta,
+ 'gamma': total_gamma,
+ 'theta': total_theta,
+ 'vega': total_vega,
+ 'rho': total_rho,
+ 'net_liquidity': self.calculate_net_liquidity()
+ }
 ```
 
 **Advanced Features:**
@@ -272,10 +272,10 @@ def get_portfolio_greeks(self) -> Dict[str, float]:
 
 **Interview Questions & Answers:**
 - **Q: How do you handle Greeks calculation for complex positions?**
-  A: Use portfolio-level aggregation with proper weighting, considering position sizes and correlation effects.
+ A: Use portfolio-level aggregation with proper weighting, considering position sizes and correlation effects.
 
 - **Q: How do you alert users to risk limit violations?**
-  A: Implement real-time threshold monitoring with `st.warning()` and `st.error()` for immediate visual feedback.
+ A: Implement real-time threshold monitoring with `st.warning()` and `st.error()` for immediate visual feedback.
 
 ### **5. Market Analysis & Correlation Monitoring**
 **File**: `utils/market_analysis.py`
@@ -284,50 +284,50 @@ def get_portfolio_greeks(self) -> Dict[str, float]:
 **Technical Implementation:**
 ```python
 def get_correlation_matrix(self) -> Dict[str, Any]:
-    """Generate real-time cross-asset correlation matrix"""
+ """Generate real-time cross-asset correlation matrix"""
 
-    # Fetch historical price data for correlation calculation
-    correlation_data = {}
-    for asset in self.assets:
-        ticker = yf.Ticker(asset)
-        hist_data = ticker.history(period="1y")
-        correlation_data[asset] = hist_data['Close'].pct_change().dropna()
+ # Fetch historical price data for correlation calculation
+ correlation_data = {}
+ for asset in self.assets:
+ ticker = yf.Ticker(asset)
+ hist_data = ticker.history(period="1y")
+ correlation_data[asset] = hist_data['Close'].pct_change().dropna()
 
-    # Create correlation matrix
-    corr_df = pd.DataFrame(correlation_data)
-    correlation_matrix = corr_df.corr()
+ # Create correlation matrix
+ corr_df = pd.DataFrame(correlation_data)
+ correlation_matrix = corr_df.corr()
 
-    # Detect regime changes using rolling correlation
-    rolling_corr = corr_df.rolling(window=60).corr()
-    regime_changes = self._detect_correlation_breaks(rolling_corr)
+ # Detect regime changes using rolling correlation
+ rolling_corr = corr_df.rolling(window=60).corr()
+ regime_changes = self._detect_correlation_breaks(rolling_corr)
 
-    return {
-        'correlation_matrix': correlation_matrix.values,
-        'asset_names': self.assets,
-        'regime_changes': regime_changes,
-        'average_correlation': correlation_matrix.mean().mean(),
-        'correlation_eigenvalues': np.linalg.eigvals(correlation_matrix)
-    }
+ return {
+ 'correlation_matrix': correlation_matrix.values,
+ 'asset_names': self.assets,
+ 'regime_changes': regime_changes,
+ 'average_correlation': correlation_matrix.mean().mean(),
+ 'correlation_eigenvalues': np.linalg.eigvals(correlation_matrix)
+ }
 
 def _detect_correlation_breaks(self, rolling_corr: pd.DataFrame) -> List[Dict]:
-    """Detect structural breaks in correlation patterns"""
+ """Detect structural breaks in correlation patterns"""
 
-    breaks = []
-    for i in range(60, len(rolling_corr), 30):  # Check every 30 days
-        current_period = rolling_corr.iloc[i-30:i]
-        previous_period = rolling_corr.iloc[i-60:i-30]
+ breaks = []
+ for i in range(60, len(rolling_corr), 30): # Check every 30 days
+ current_period = rolling_corr.iloc[i-30:i]
+ previous_period = rolling_corr.iloc[i-60:i-30]
 
-        # Calculate correlation change
-        corr_change = abs(current_period.mean() - previous_period.mean()).mean()
+ # Calculate correlation change
+ corr_change = abs(current_period.mean() - previous_period.mean()).mean()
 
-        if corr_change > 0.2:  # Significant correlation break
-            breaks.append({
-                'date': rolling_corr.index[i],
-                'magnitude': corr_change,
-                'type': 'correlation_break'
-            })
+ if corr_change > 0.2: # Significant correlation break
+ breaks.append({
+ 'date': rolling_corr.index[i],
+ 'magnitude': corr_change,
+ 'type': 'correlation_break'
+ })
 
-    return breaks
+ return breaks
 ```
 
 **Advanced Features:**
@@ -340,10 +340,10 @@ def _detect_correlation_breaks(self, rolling_corr: pd.DataFrame) -> List[Dict]:
 
 **Interview Questions & Answers:**
 - **Q: How do you detect market regime changes?**
-  A: Use rolling correlation analysis, variance ratio tests, and hidden Markov models to identify structural breaks.
+ A: Use rolling correlation analysis, variance ratio tests, and hidden Markov models to identify structural breaks.
 
 - **Q: How do you handle missing data in correlation calculations?**
-  A: Use pairwise correlation with minimum overlap requirements and interpolation for sparse data points.
+ A: Use pairwise correlation with minimum overlap requirements and interpolation for sparse data points.
 
 ### **6. Options Flow & Sentiment Analysis**
 **File**: `utils/market_analysis.py` (Flow Analysis Section)
@@ -352,53 +352,53 @@ def _detect_correlation_breaks(self, rolling_corr: pd.DataFrame) -> List[Dict]:
 **Technical Implementation:**
 ```python
 def analyze_options_flow(self) -> Dict[str, Any]:
-    """Analyze options flow for sentiment and unusual activity"""
+ """Analyze options flow for sentiment and unusual activity"""
 
-    flow_data = []
-    unusual_activity = []
+ flow_data = []
+ unusual_activity = []
 
-    for symbol in self.watchlist:
-        # Get options chain data
-        options_chain = self.data_provider.get_options_chain(symbol)
+ for symbol in self.watchlist:
+ # Get options chain data
+ options_chain = self.data_provider.get_options_chain(symbol)
 
-        # Calculate flow metrics
-        call_volume = options_chain[options_chain['Type'] == 'CALL']['Volume'].sum()
-        put_volume = options_chain[options_chain['Type'] == 'PUT']['Volume'].sum()
+ # Calculate flow metrics
+ call_volume = options_chain[options_chain['Type'] == 'CALL']['Volume'].sum()
+ put_volume = options_chain[options_chain['Type'] == 'PUT']['Volume'].sum()
 
-        # Put/Call ratio
-        pc_ratio = put_volume / call_volume if call_volume > 0 else 0
+ # Put/Call ratio
+ pc_ratio = put_volume / call_volume if call_volume > 0 else 0
 
-        # Volume surge detection
-        avg_volume = self._get_historical_avg_volume(symbol)
-        current_volume = call_volume + put_volume
-        volume_surge = current_volume / avg_volume if avg_volume > 0 else 1
+ # Volume surge detection
+ avg_volume = self._get_historical_avg_volume(symbol)
+ current_volume = call_volume + put_volume
+ volume_surge = current_volume / avg_volume if avg_volume > 0 else 1
 
-        # Large block detection
-        large_blocks = options_chain[options_chain['Volume'] > avg_volume * 3]
+ # Large block detection
+ large_blocks = options_chain[options_chain['Volume'] > avg_volume * 3]
 
-        if volume_surge > 2.0 or len(large_blocks) > 5:
-            unusual_activity.append({
-                'symbol': symbol,
-                'volume_surge': volume_surge,
-                'large_blocks': len(large_blocks),
-                'pc_ratio': pc_ratio,
-                'sentiment': 'BULLISH' if pc_ratio < 0.7 else 'BEARISH' if pc_ratio > 1.3 else 'NEUTRAL'
-            })
+ if volume_surge > 2.0 or len(large_blocks) > 5:
+ unusual_activity.append({
+ 'symbol': symbol,
+ 'volume_surge': volume_surge,
+ 'large_blocks': len(large_blocks),
+ 'pc_ratio': pc_ratio,
+ 'sentiment': 'BULLISH' if pc_ratio < 0.7 else 'BEARISH' if pc_ratio > 1.3 else 'NEUTRAL'
+ })
 
-        flow_data.append({
-            'symbol': symbol,
-            'call_volume': call_volume,
-            'put_volume': put_volume,
-            'pc_ratio': pc_ratio,
-            'total_premium': options_chain['Last'].sum() * options_chain['Volume'].sum()
-        })
+ flow_data.append({
+ 'symbol': symbol,
+ 'call_volume': call_volume,
+ 'put_volume': put_volume,
+ 'pc_ratio': pc_ratio,
+ 'total_premium': options_chain['Last'].sum() * options_chain['Volume'].sum()
+ })
 
-    return {
-        'flow_data': flow_data,
-        'unusual_activity': unusual_activity,
-        'market_sentiment': self._calculate_market_sentiment(flow_data),
-        'fear_greed_index': self._calculate_fear_greed_index(flow_data)
-    }
+ return {
+ 'flow_data': flow_data,
+ 'unusual_activity': unusual_activity,
+ 'market_sentiment': self._calculate_market_sentiment(flow_data),
+ 'fear_greed_index': self._calculate_fear_greed_index(flow_data)
+ }
 ```
 
 **Advanced Features:**
@@ -416,46 +416,46 @@ def analyze_options_flow(self) -> Dict[str, Any]:
 **Technical Implementation:**
 ```python
 def calculate_portfolio_var(self, confidence_level: float = 0.95,
-                           time_horizon: int = 1) -> Dict[str, float]:
-    """Calculate Value at Risk using multiple methodologies"""
+ time_horizon: int = 1) -> Dict[str, float]:
+ """Calculate Value at Risk using multiple methodologies"""
 
-    # Historical simulation method
-    returns = self._get_portfolio_returns_history()
-    hist_var = np.percentile(returns, (1 - confidence_level) * 100) * np.sqrt(time_horizon)
+ # Historical simulation method
+ returns = self._get_portfolio_returns_history()
+ hist_var = np.percentile(returns, (1 - confidence_level) * 100) * np.sqrt(time_horizon)
 
-    # Parametric VaR (assuming normal distribution)
-    mean_return = np.mean(returns)
-    std_return = np.std(returns)
-    z_score = stats.norm.ppf(1 - confidence_level)
-    parametric_var = (mean_return + z_score * std_return) * np.sqrt(time_horizon)
+ # Parametric VaR (assuming normal distribution)
+ mean_return = np.mean(returns)
+ std_return = np.std(returns)
+ z_score = stats.norm.ppf(1 - confidence_level)
+ parametric_var = (mean_return + z_score * std_return) * np.sqrt(time_horizon)
 
-    # Monte Carlo VaR
-    mc_returns = self._monte_carlo_simulation(num_simulations=10000)
-    mc_var = np.percentile(mc_returns, (1 - confidence_level) * 100)
+ # Monte Carlo VaR
+ mc_returns = self._monte_carlo_simulation(num_simulations=10000)
+ mc_var = np.percentile(mc_returns, (1 - confidence_level) * 100)
 
-    # Expected Shortfall (Conditional VaR)
-    expected_shortfall = np.mean([r for r in returns if r <= hist_var])
+ # Expected Shortfall (Conditional VaR)
+ expected_shortfall = np.mean([r for r in returns if r <= hist_var])
 
-    # Greeks-based VaR
-    portfolio_greeks = self.get_portfolio_greeks()
-    underlying_vol = 0.20  # Assume 20% underlying volatility
+ # Greeks-based VaR
+ portfolio_greeks = self.get_portfolio_greeks()
+ underlying_vol = 0.20 # Assume 20% underlying volatility
 
-    # Delta-normal VaR
-    delta_var = abs(portfolio_greeks['delta']) * underlying_vol / np.sqrt(252)
+ # Delta-normal VaR
+ delta_var = abs(portfolio_greeks['delta']) * underlying_vol / np.sqrt(252)
 
-    # Gamma adjustment
-    gamma_adjustment = 0.5 * portfolio_greeks['gamma'] * (underlying_vol ** 2)
+ # Gamma adjustment
+ gamma_adjustment = 0.5 * portfolio_greeks['gamma'] * (underlying_vol ** 2)
 
-    return {
-        'historical_var': abs(hist_var) * self.portfolio_value,
-        'parametric_var': abs(parametric_var) * self.portfolio_value,
-        'monte_carlo_var': abs(mc_var) * self.portfolio_value,
-        'expected_shortfall': abs(expected_shortfall) * self.portfolio_value,
-        'delta_var': delta_var * self.portfolio_value,
-        'gamma_adjustment': gamma_adjustment * self.portfolio_value,
-        'confidence_level': confidence_level,
-        'time_horizon': time_horizon
-    }
+ return {
+ 'historical_var': abs(hist_var) * self.portfolio_value,
+ 'parametric_var': abs(parametric_var) * self.portfolio_value,
+ 'monte_carlo_var': abs(mc_var) * self.portfolio_value,
+ 'expected_shortfall': abs(expected_shortfall) * self.portfolio_value,
+ 'delta_var': delta_var * self.portfolio_value,
+ 'gamma_adjustment': gamma_adjustment * self.portfolio_value,
+ 'confidence_level': confidence_level,
+ 'time_horizon': time_horizon
+ }
 ```
 
 **Advanced Features:**
@@ -477,63 +477,63 @@ def calculate_portfolio_var(self, confidence_level: float = 0.95,
 **Technical Implementation:**
 ```python
 class BacktestingEngine:
-    """Professional-grade backtesting engine with realistic market simulation"""
+ """Professional-grade backtesting engine with realistic market simulation"""
 
-    def __init__(self, initial_capital: float = 1000000.0):
-        self.initial_capital = initial_capital
-        self.current_capital = initial_capital
-        self.positions: Dict[str, Position] = {}
-        self.trades: List[Trade] = []
+ def __init__(self, initial_capital: float = 1000000.0):
+ self.initial_capital = initial_capital
+ self.current_capital = initial_capital
+ self.positions: Dict[str, Position] = {}
+ self.trades: List[Trade] = []
 
-        # Realistic market simulation parameters
-        self.bid_ask_spread_pct = 0.02  # 2% bid-ask spread
-        self.slippage_pct = 0.005  # 0.5% slippage on market orders
-        self.commission_per_contract = 1.0  # $1 per contract
-        self.market_impact_factor = 0.001  # Additional cost for large orders
+ # Realistic market simulation parameters
+ self.bid_ask_spread_pct = 0.02 # 2% bid-ask spread
+ self.slippage_pct = 0.005 # 0.5% slippage on market orders
+ self.commission_per_contract = 1.0 # $1 per contract
+ self.market_impact_factor = 0.001 # Additional cost for large orders
 
-    def execute_order(self, order: Order, market_data: MarketData) -> Optional[Trade]:
-        """Execute order with realistic transaction costs and market impact"""
+ def execute_order(self, order: Order, market_data: MarketData) -> Optional[Trade]:
+ """Execute order with realistic transaction costs and market impact"""
 
-        # Get market prices with bid-ask spread
-        bid, ask = market_data.bid_ask_spreads.get(option_id, (0, 0))
+ # Get market prices with bid-ask spread
+ bid, ask = market_data.bid_ask_spreads.get(option_id, (0, 0))
 
-        # Determine execution price based on order type
-        if order.order_type == OrderType.BUY:
-            execution_price = ask if order.limit_price is None or order.limit_price >= ask else None
-        else:
-            execution_price = bid if order.limit_price is None or order.limit_price <= bid else None
+ # Determine execution price based on order type
+ if order.order_type == OrderType.BUY:
+ execution_price = ask if order.limit_price is None or order.limit_price >= ask else None
+ else:
+ execution_price = bid if order.limit_price is None or order.limit_price <= bid else None
 
-        if execution_price is None:
-            return None  # Order not filled
+ if execution_price is None:
+ return None # Order not filled
 
-        # Calculate transaction costs
-        commission = abs(order.quantity) * self.commission_per_contract
+ # Calculate transaction costs
+ commission = abs(order.quantity) * self.commission_per_contract
 
-        # Market impact for large orders
-        volume = market_data.volumes.get(option_id, 100)
-        market_impact = 0
-        if abs(order.quantity) > volume * 0.1:
-            market_impact = execution_price * self.market_impact_factor * (abs(order.quantity) / volume)
+ # Market impact for large orders
+ volume = market_data.volumes.get(option_id, 100)
+ market_impact = 0
+ if abs(order.quantity) > volume * 0.1:
+ market_impact = execution_price * self.market_impact_factor * (abs(order.quantity) / volume)
 
-        # Slippage for market orders
-        slippage = execution_price * self.slippage_pct if order.limit_price is None else 0
+ # Slippage for market orders
+ slippage = execution_price * self.slippage_pct if order.limit_price is None else 0
 
-        total_cost = commission + market_impact + slippage
+ total_cost = commission + market_impact + slippage
 
-        # Create and return trade
-        trade = Trade(
-            contract=order.contract,
-            quantity=order.quantity,
-            price=execution_price,
-            timestamp=market_data.timestamp,
-            transaction_cost=total_cost,
-            slippage=slippage
-        )
+ # Create and return trade
+ trade = Trade(
+ contract=order.contract,
+ quantity=order.quantity,
+ price=execution_price,
+ timestamp=market_data.timestamp,
+ transaction_cost=total_cost,
+ slippage=slippage
+ )
 
-        self._update_positions(trade)
-        self.trades.append(trade)
+ self._update_positions(trade)
+ self.trades.append(trade)
 
-        return trade
+ return trade
 ```
 
 **Key Features:**
@@ -551,49 +551,49 @@ class BacktestingEngine:
 **Technical Implementation:**
 ```python
 def validate_strategy(self, strategy_function: Callable, start_date: datetime,
-                     end_date: datetime, strategy_name: str = "Strategy") -> ValidationResult:
-    """Comprehensive strategy validation with multiple testing methods"""
+ end_date: datetime, strategy_name: str = "Strategy") -> ValidationResult:
+ """Comprehensive strategy validation with multiple testing methods"""
 
-    # 1. In-sample vs Out-of-sample testing
-    in_sample_metrics, out_of_sample_metrics = self._in_sample_out_sample_test(
-        strategy_function, start_date, end_date
-    )
+ # 1. In-sample vs Out-of-sample testing
+ in_sample_metrics, out_of_sample_metrics = self._in_sample_out_sample_test(
+ strategy_function, start_date, end_date
+ )
 
-    # 2. Walk-forward analysis
-    walk_forward_results = self._walk_forward_analysis(
-        strategy_function, start_date, end_date, window_size=252, step_size=63
-    )
+ # 2. Walk-forward analysis
+ walk_forward_results = self._walk_forward_analysis(
+ strategy_function, start_date, end_date, window_size=252, step_size=63
+ )
 
-    # 3. Monte Carlo simulation
-    monte_carlo_results = self._monte_carlo_simulation(
-        strategy_function, start_date, end_date, num_simulations=1000
-    )
+ # 3. Monte Carlo simulation
+ monte_carlo_results = self._monte_carlo_simulation(
+ strategy_function, start_date, end_date, num_simulations=1000
+ )
 
-    # 4. Statistical significance tests
-    statistical_tests = self._statistical_significance_tests(
-        in_sample_metrics, out_of_sample_metrics
-    )
+ # 4. Statistical significance tests
+ statistical_tests = self._statistical_significance_tests(
+ in_sample_metrics, out_of_sample_metrics
+ )
 
-    # 5. Overfitting detection
-    overfitting_score = self._detect_overfitting(
-        in_sample_metrics, out_of_sample_metrics
-    )
+ # 5. Overfitting detection
+ overfitting_score = self._detect_overfitting(
+ in_sample_metrics, out_of_sample_metrics
+ )
 
-    # 6. Overall validation score (0-100)
-    validation_score = self._calculate_validation_score(
-        in_sample_metrics, out_of_sample_metrics, walk_forward_results, overfitting_score
-    )
+ # 6. Overall validation score (0-100)
+ validation_score = self._calculate_validation_score(
+ in_sample_metrics, out_of_sample_metrics, walk_forward_results, overfitting_score
+ )
 
-    return ValidationResult(
-        strategy_name=strategy_name,
-        in_sample_metrics=in_sample_metrics,
-        out_of_sample_metrics=out_of_sample_metrics,
-        walk_forward_results=walk_forward_results,
-        monte_carlo_results=monte_carlo_results,
-        statistical_tests=statistical_tests,
-        overfitting_score=overfitting_score,
-        validation_score=validation_score
-    )
+ return ValidationResult(
+ strategy_name=strategy_name,
+ in_sample_metrics=in_sample_metrics,
+ out_of_sample_metrics=out_of_sample_metrics,
+ walk_forward_results=walk_forward_results,
+ monte_carlo_results=monte_carlo_results,
+ statistical_tests=statistical_tests,
+ overfitting_score=overfitting_score,
+ validation_score=validation_score
+ )
 ```
 
 **Key Validation Methods:**
@@ -611,53 +611,53 @@ def validate_strategy(self, strategy_function: Callable, start_date: datetime,
 **Technical Implementation:**
 ```python
 def run_monte_carlo_backtest(self, strategy_function: Callable, start_date: datetime,
-                           end_date: datetime, market_scenarios: Optional[Dict] = None) -> MonteCarloSummary:
-    """Run Monte Carlo simulation with multiple market scenarios"""
+ end_date: datetime, market_scenarios: Optional[Dict] = None) -> MonteCarloSummary:
+ """Run Monte Carlo simulation with multiple market scenarios"""
 
-    results = []
-    scenarios = market_scenarios or self._get_default_scenarios()
+ results = []
+ scenarios = market_scenarios or self._get_default_scenarios()
 
-    for sim_id in range(self.num_simulations):
-        # Generate scenario-based market data
-        scenario_data = self._generate_scenario_market_data(start_date, end_date, scenarios, sim_id)
+ for sim_id in range(self.num_simulations):
+ # Generate scenario-based market data
+ scenario_data = self._generate_scenario_market_data(start_date, end_date, scenarios, sim_id)
 
-        # Run backtest with simulated data
-        engine = BacktestingEngine()
-        backtest_results = self._run_simulation_backtest(engine, strategy_function, scenario_data)
+ # Run backtest with simulated data
+ engine = BacktestingEngine()
+ backtest_results = self._run_simulation_backtest(engine, strategy_function, scenario_data)
 
-        # Calculate simulation metrics
-        sim_result = self._calculate_simulation_metrics(backtest_results, sim_id)
-        results.append(sim_result)
+ # Calculate simulation metrics
+ sim_result = self._calculate_simulation_metrics(backtest_results, sim_id)
+ results.append(sim_result)
 
-    return self._aggregate_simulation_results(results)
+ return self._aggregate_simulation_results(results)
 
 def _generate_scenario_market_data(self, start_date: datetime, end_date: datetime,
-                                 scenarios: Dict, sim_id: int) -> List[MarketData]:
-    """Generate realistic market data with correlation and volatility clustering"""
+ scenarios: Dict, sim_id: int) -> List[MarketData]:
+ """Generate realistic market data with correlation and volatility clustering"""
 
-    # Sample scenario parameters
-    vol_regime = np.random.choice(
-        list(scenarios['volatility_regime'].keys()),
-        p=[scenarios['volatility_regime'][k]['prob'] for k in scenarios['volatility_regime']]
-    )
+ # Sample scenario parameters
+ vol_regime = np.random.choice(
+ list(scenarios['volatility_regime'].keys()),
+ p=[scenarios['volatility_regime'][k]['prob'] for k in scenarios['volatility_regime']]
+ )
 
-    base_volatility = 0.25 * scenarios['volatility_regime'][vol_regime]['vol_multiplier']
+ base_volatility = 0.25 * scenarios['volatility_regime'][vol_regime]['vol_multiplier']
 
-    # Generate correlated returns using Cholesky decomposition
-    correlation_matrix = self._generate_correlation_matrix(num_assets=5)
-    independent_returns = np.random.normal(0, base_volatility/np.sqrt(252), (num_days, 5))
-    correlated_returns = independent_returns @ np.linalg.cholesky(correlation_matrix).T
+ # Generate correlated returns using Cholesky decomposition
+ correlation_matrix = self._generate_correlation_matrix(num_assets=5)
+ independent_returns = np.random.normal(0, base_volatility/np.sqrt(252), (num_days, 5))
+ correlated_returns = independent_returns @ np.linalg.cholesky(correlation_matrix).T
 
-    # Add jump risk
-    for i in range(num_days):
-        if np.random.random() < scenarios['jump_risk']['prob_jump']:
-            jump_size = np.random.normal(
-                scenarios['jump_risk']['jump_mean'],
-                scenarios['jump_risk']['jump_std']
-            )
-            correlated_returns[i, 0] += jump_size  # Apply to main asset
+ # Add jump risk
+ for i in range(num_days):
+ if np.random.random() < scenarios['jump_risk']['prob_jump']:
+ jump_size = np.random.normal(
+ scenarios['jump_risk']['jump_mean'],
+ scenarios['jump_risk']['jump_std']
+ )
+ correlated_returns[i, 0] += jump_size # Apply to main asset
 
-    return market_data_series
+ return market_data_series
 ```
 
 **Advanced Simulation Features:**
@@ -698,35 +698,35 @@ def _generate_scenario_market_data(self, start_date: datetime, end_date: datetim
 ### **Greeks-Based P&L Attribution**
 ```python
 def analyze_greeks_attribution(self, greeks_history: List[Dict],
-                             underlying_prices: List[float]) -> GreeksAttribution:
-    """Decompose P&L into Greeks contributions"""
+ underlying_prices: List[float]) -> GreeksAttribution:
+ """Decompose P&L into Greeks contributions"""
 
-    delta_pnl = 0
-    gamma_pnl = 0
-    theta_pnl = 0
-    vega_pnl = 0
+ delta_pnl = 0
+ gamma_pnl = 0
+ theta_pnl = 0
+ vega_pnl = 0
 
-    for i in range(1, len(greeks_history)):
-        price_change = underlying_prices[i] - underlying_prices[i-1]
+ for i in range(1, len(greeks_history)):
+ price_change = underlying_prices[i] - underlying_prices[i-1]
 
-        # Delta P&L (first-order price sensitivity)
-        delta_pnl += greeks_history[i-1]['delta'] * price_change
+ # Delta P&L (first-order price sensitivity)
+ delta_pnl += greeks_history[i-1]['delta'] * price_change
 
-        # Gamma P&L (convexity adjustment)
-        gamma_pnl += 0.5 * greeks_history[i-1]['gamma'] * (price_change ** 2)
+ # Gamma P&L (convexity adjustment)
+ gamma_pnl += 0.5 * greeks_history[i-1]['gamma'] * (price_change ** 2)
 
-        # Theta P&L (time decay)
-        theta_pnl += greeks_history[i-1]['theta']  # Daily theta
+ # Theta P&L (time decay)
+ theta_pnl += greeks_history[i-1]['theta'] # Daily theta
 
-        # Vega P&L (volatility changes)
-        vol_change = self._estimate_volatility_change(i)
-        vega_pnl += greeks_history[i-1]['vega'] * vol_change
+ # Vega P&L (volatility changes)
+ vol_change = self._estimate_volatility_change(i)
+ vega_pnl += greeks_history[i-1]['vega'] * vol_change
 
-    total_explained = delta_pnl + gamma_pnl + theta_pnl + vega_pnl
-    total_pnl = greeks_history[-1]['pnl'] - greeks_history[0]['pnl']
-    residual_pnl = total_pnl - total_explained
+ total_explained = delta_pnl + gamma_pnl + theta_pnl + vega_pnl
+ total_pnl = greeks_history[-1]['pnl'] - greeks_history[0]['pnl']
+ residual_pnl = total_pnl - total_explained
 
-    return GreeksAttribution(delta_pnl, gamma_pnl, theta_pnl, vega_pnl, 0, residual_pnl)
+ return GreeksAttribution(delta_pnl, gamma_pnl, theta_pnl, vega_pnl, 0, residual_pnl)
 ```
 
 ---
@@ -775,26 +775,26 @@ def analyze_greeks_attribution(self, greeks_history: List[Dict],
 
 ```python
 class TestRunner:
-    """Automated test runner with performance monitoring"""
+ """Automated test runner with performance monitoring"""
 
-    def run_all_tests(self) -> Dict[str, Any]:
-        # Monitor system resources
-        initial_memory = psutil.virtual_memory().percent
-        initial_cpu = psutil.cpu_percent()
+ def run_all_tests(self) -> Dict[str, Any]:
+ # Monitor system resources
+ initial_memory = psutil.virtual_memory().percent
+ initial_cpu = psutil.cpu_percent()
 
-        results = {
-            'unit_tests': self._run_unit_tests(),
-            'integration_tests': self._run_integration_tests(),
-            'performance_tests': self._run_performance_tests(),
-            'validation_tests': self._run_validation_tests(),
-            'stress_tests': self._run_stress_tests()
-        }
+ results = {
+ 'unit_tests': self._run_unit_tests(),
+ 'integration_tests': self._run_integration_tests(),
+ 'performance_tests': self._run_performance_tests(),
+ 'validation_tests': self._run_validation_tests(),
+ 'stress_tests': self._run_stress_tests()
+ }
 
-        # Generate comprehensive reports
-        self._generate_test_report(results)
-        self._generate_performance_report(results)
+ # Generate comprehensive reports
+ self._generate_test_report(results)
+ self._generate_performance_report(results)
 
-        return results
+ return results
 ```
 
 **Quality Metrics Achieved:**
@@ -814,52 +814,52 @@ class TestRunner:
 
 ```python
 class DeltaNeutralStrategy:
-    """Dynamic delta-hedging strategy with risk management"""
+ """Dynamic delta-hedging strategy with risk management"""
 
-    def generate_orders(self, market_data: MarketData, positions: Dict, capital: float) -> List[Order]:
-        current_delta = self._calculate_portfolio_delta(market_data, positions)
+ def generate_orders(self, market_data: MarketData, positions: Dict, capital: float) -> List[Order]:
+ current_delta = self._calculate_portfolio_delta(market_data, positions)
 
-        # Rebalance if delta exceeds threshold
-        if abs(current_delta - self.target_delta) > self.rebalance_threshold:
-            return self._generate_rebalancing_orders(market_data, current_delta, capital)
+ # Rebalance if delta exceeds threshold
+ if abs(current_delta - self.target_delta) > self.rebalance_threshold:
+ return self._generate_rebalancing_orders(market_data, current_delta, capital)
 
-        # Look for new opportunities
-        if len(positions) < self.max_positions:
-            return self._generate_new_position_orders(market_data, capital)
+ # Look for new opportunities
+ if len(positions) < self.max_positions:
+ return self._generate_new_position_orders(market_data, capital)
 
-        return []
+ return []
 ```
 
 ### **2. Iron Condor Strategy**
 ```python
 class IronCondorStrategy:
-    """Range-bound market strategy with profit targets"""
+ """Range-bound market strategy with profit targets"""
 
-    def generate_orders(self, market_data: MarketData, positions: Dict, capital: float) -> List[Order]:
-        # Manage existing positions
-        orders = self._manage_existing_positions(market_data, positions)
+ def generate_orders(self, market_data: MarketData, positions: Dict, capital: float) -> List[Order]:
+ # Manage existing positions
+ orders = self._manage_existing_positions(market_data, positions)
 
-        # Enter new iron condors in low volatility environments
-        if self._is_low_volatility_environment(market_data):
-            orders.extend(self._create_iron_condor(market_data, capital))
+ # Enter new iron condors in low volatility environments
+ if self._is_low_volatility_environment(market_data):
+ orders.extend(self._create_iron_condor(market_data, capital))
 
-        return orders
+ return orders
 ```
 
 ### **3. Volatility Trading Strategy**
 ```python
 class VolatilityTradingStrategy:
-    """Long/short volatility based on IV percentiles"""
+ """Long/short volatility based on IV percentiles"""
 
-    def generate_orders(self, market_data: MarketData, positions: Dict, capital: float) -> List[Order]:
-        iv_percentile = self._calculate_iv_percentile(market_data)
+ def generate_orders(self, market_data: MarketData, positions: Dict, capital: float) -> List[Order]:
+ iv_percentile = self._calculate_iv_percentile(market_data)
 
-        if iv_percentile < 20:  # Low IV - buy volatility
-            return self._buy_volatility_orders(market_data, capital)
-        elif iv_percentile > 80:  # High IV - sell volatility
-            return self._sell_volatility_orders(market_data, capital)
+ if iv_percentile < 20: # Low IV - buy volatility
+ return self._buy_volatility_orders(market_data, capital)
+ elif iv_percentile > 80: # High IV - sell volatility
+ return self._sell_volatility_orders(market_data, capital)
 
-        return []
+ return []
 ```
 
 ---
@@ -892,9 +892,9 @@ class VolatilityTradingStrategy:
 ```
 Market Data Flow:
 yfinance API → Data Provider → Pricing Engine → Portfolio Manager → Visualization
-     ↓              ↓              ↓              ↓              ↓
-Real-time     Options Chain    Black-Scholes    Greeks        Interactive
-Updates       Generation       Pricing          Calculation    Charts
+ ↓ ↓ ↓ ↓ ↓
+Real-time Options Chain Black-Scholes Greeks Interactive
+Updates Generation Pricing Calculation Charts
 ```
 
 ### **Performance Optimizations**

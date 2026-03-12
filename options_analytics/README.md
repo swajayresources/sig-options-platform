@@ -37,52 +37,52 @@ A comprehensive, professional-grade options trading analytics platform with real
 ### Core Components
 
 1. **Analytics Framework** (`analytics_framework.py`)
-   - Central analytics engine
-   - Market data processing
-   - Greeks calculations
-   - Risk metrics computation
+ - Central analytics engine
+ - Market data processing
+ - Greeks calculations
+ - Risk metrics computation
 
 2. **Portfolio Monitor** (`portfolio_monitor.py`)
-   - Real-time portfolio tracking
-   - Performance monitoring
-   - Risk limit monitoring
-   - Position analytics
+ - Real-time portfolio tracking
+ - Performance monitoring
+ - Risk limit monitoring
+ - Position analytics
 
 3. **Market Analysis** (`market_analysis.py`)
-   - Signal generation engine
-   - Volatility analysis
-   - Arbitrage detection
-   - Market regime detection
+ - Signal generation engine
+ - Volatility analysis
+ - Arbitrage detection
+ - Market regime detection
 
 4. **Flow Analysis** (`flow_analysis.py`)
-   - Options flow processing
-   - Sentiment calculation
-   - Unusual activity detection
-   - Flow pattern recognition
+ - Options flow processing
+ - Sentiment calculation
+ - Unusual activity detection
+ - Flow pattern recognition
 
 5. **Visualization Components** (`visualization_components.py`)
-   - Interactive charting
-   - 3D visualizations
-   - Dashboard components
-   - Real-time updates
+ - Interactive charting
+ - 3D visualizations
+ - Dashboard components
+ - Real-time updates
 
 6. **Alert System** (`alert_system.py`)
-   - Rule-based alerting
-   - Multi-channel notifications
-   - Alert aggregation
-   - Performance tracking
+ - Rule-based alerting
+ - Multi-channel notifications
+ - Alert aggregation
+ - Performance tracking
 
 7. **Performance Analytics** (`performance_analytics.py`)
-   - Comprehensive performance metrics
-   - Attribution analysis
-   - Benchmark comparison
-   - Risk-adjusted returns
+ - Comprehensive performance metrics
+ - Attribution analysis
+ - Benchmark comparison
+ - Risk-adjusted returns
 
 8. **Trading Interface** (`trading_interface.py`)
-   - Web-based professional interface
-   - Real-time WebSocket updates
-   - Interactive dashboards
-   - REST API endpoints
+ - Web-based professional interface
+ - Real-time WebSocket updates
+ - Interactive dashboards
+ - REST API endpoints
 
 ## 🚦 Getting Started
 
@@ -118,32 +118,32 @@ Create a configuration file `config.json`:
 
 ```json
 {
-  "host": "0.0.0.0",
-  "port": 8080,
-  "risk_limits": {
-    "max_delta": 1000,
-    "max_gamma": 500,
-    "max_theta": -200,
-    "max_vega": 2000,
-    "max_var": 100000
-  },
-  "notifications": {
-    "email": {
-      "enabled": true,
-      "smtp_server": "smtp.gmail.com",
-      "smtp_port": 587,
-      "username": "your_email@gmail.com",
-      "password": "your_password",
-      "from_email": "alerts@yourcompany.com",
-      "to_email": "trader@yourcompany.com"
-    },
-    "slack": {
-      "enabled": true,
-      "webhook_url": "https://hooks.slack.com/services/..."
-    }
-  },
-  "chart_theme": "plotly_dark",
-  "update_frequency_ms": 1000
+ "host": "0.0.0.0",
+ "port": 8080,
+ "risk_limits": {
+ "max_delta": 1000,
+ "max_gamma": 500,
+ "max_theta": -200,
+ "max_vega": 2000,
+ "max_var": 100000
+ },
+ "notifications": {
+ "email": {
+ "enabled": true,
+ "smtp_server": "smtp.gmail.com",
+ "smtp_port": 587,
+ "username": "your_email@gmail.com",
+ "password": "your_password",
+ "from_email": "alerts@yourcompany.com",
+ "to_email": "trader@yourcompany.com"
+ },
+ "slack": {
+ "enabled": true,
+ "webhook_url": "https://hooks.slack.com/services/..."
+ }
+ },
+ "chart_theme": "plotly_dark",
+ "update_frequency_ms": 1000
 }
 ```
 
@@ -162,20 +162,20 @@ await monitor.initialize()
 
 # Update positions
 positions = {
-    "AAPL_240115C150": Position(
-        symbol="AAPL_240115C150",
-        quantity=10,
-        average_price=5.50,
-        current_price=6.20,
-        market_value=6200,
-        unrealized_pnl=700,
-        realized_pnl=0,
-        delta=0.65,
-        gamma=0.02,
-        theta=-0.05,
-        vega=0.15,
-        rho=0.03
-    )
+ "AAPL_240115C150": Position(
+ symbol="AAPL_240115C150",
+ quantity=10,
+ average_price=5.50,
+ current_price=6.20,
+ market_value=6200,
+ unrealized_pnl=700,
+ realized_pnl=0,
+ delta=0.65,
+ gamma=0.02,
+ theta=-0.05,
+ vega=0.15,
+ rho=0.03
+ )
 }
 
 await monitor.update_positions(positions)
@@ -199,9 +199,9 @@ await analysis.initialize()
 signals = await analysis.get_active_signals(min_strength=0.7)
 
 for signal in signals:
-    print(f"Signal: {signal.symbol} - {signal.signal_type}")
-    print(f"Strength: {signal.strength:.2f}, Confidence: {signal.confidence:.2f}")
-    print(f"Direction: {signal.direction}")
+ print(f"Signal: {signal.symbol} - {signal.signal_type}")
+ print(f"Strength: {signal.strength:.2f}, Confidence: {signal.confidence:.2f}")
+ print(f"Direction: {signal.direction}")
 ```
 
 ### Flow Analysis
@@ -217,9 +217,9 @@ await flow_engine.initialize()
 analytics = await flow_engine.get_flow_analytics(timeframe='1h')
 
 for symbol, data in analytics.items():
-    print(f"{symbol}: P/C Ratio = {data.put_call_ratio:.2f}")
-    print(f"Sentiment Score: {data.sentiment_score:.2f}")
-    print(f"Flow Direction: {data.flow_direction}")
+ print(f"{symbol}: P/C Ratio = {data.put_call_ratio:.2f}")
+ print(f"Sentiment Score: {data.sentiment_score:.2f}")
+ print(f"Flow Direction: {data.flow_direction}")
 ```
 
 ### Visualization
@@ -271,26 +271,26 @@ html = viz.get_chart_html(dashboard['portfolio_overview'])
 from src.market_analysis import SignalGenerator
 
 class CustomVolatilitySignal(SignalGenerator):
-    async def generate_signals(self, market_data, historical_data):
-        signals = []
+ async def generate_signals(self, market_data, historical_data):
+ signals = []
 
-        for symbol, data in market_data.items():
-            # Custom signal logic
-            iv_zscore = self.calculate_iv_zscore(data, historical_data[symbol])
+ for symbol, data in market_data.items():
+ # Custom signal logic
+ iv_zscore = self.calculate_iv_zscore(data, historical_data[symbol])
 
-            if abs(iv_zscore) > 2.0:
-                signal = TradingSignal(
-                    signal_id=f"custom_{symbol}",
-                    symbol=symbol,
-                    signal_type="custom_volatility",
-                    direction="sell" if iv_zscore > 0 else "buy",
-                    strength=min(abs(iv_zscore) / 3.0, 1.0),
-                    confidence=0.8,
-                    metadata={"iv_zscore": iv_zscore}
-                )
-                signals.append(signal)
+ if abs(iv_zscore) > 2.0:
+ signal = TradingSignal(
+ signal_id=f"custom_{symbol}",
+ symbol=symbol,
+ signal_type="custom_volatility",
+ direction="sell" if iv_zscore > 0 else "buy",
+ strength=min(abs(iv_zscore) / 3.0, 1.0),
+ confidence=0.8,
+ metadata={"iv_zscore": iv_zscore}
+ )
+ signals.append(signal)
 
-        return signals
+ return signals
 ```
 
 ### Custom Alert Rules
@@ -300,14 +300,14 @@ from src.alert_system import AlertRule, AlertType, AlertPriority
 
 # Create custom alert rule
 custom_rule = AlertRule(
-    rule_id="portfolio_concentration",
-    name="Portfolio Concentration Alert",
-    description="Alert when single position exceeds 20% of portfolio",
-    alert_type=AlertType.RISK_LIMIT,
-    priority=AlertPriority.HIGH,
-    condition="max(position.market_value for position in positions.values()) / sum(position.market_value for position in positions.values()) > 0.2",
-    parameters={"max_concentration": 0.2},
-    notification_channels=[NotificationChannel.EMAIL, NotificationChannel.SLACK]
+ rule_id="portfolio_concentration",
+ name="Portfolio Concentration Alert",
+ description="Alert when single position exceeds 20% of portfolio",
+ alert_type=AlertType.RISK_LIMIT,
+ priority=AlertPriority.HIGH,
+ condition="max(position.market_value for position in positions.values()) / sum(position.market_value for position in positions.values()) > 0.2",
+ parameters={"max_concentration": 0.2},
+ notification_channels=[NotificationChannel.EMAIL, NotificationChannel.SLACK]
 )
 
 await alert_manager.add_alert_rule(custom_rule)

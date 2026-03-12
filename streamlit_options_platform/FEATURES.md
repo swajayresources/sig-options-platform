@@ -91,10 +91,10 @@ This Streamlit-based options trading platform provides institutional-grade analy
 ```python
 # 3D Volatility Surface
 fig = go.Figure(data=[go.Surface(
-    x=strikes,
-    y=expiries,
-    z=vol_matrix,
-    colorscale='Viridis'
+ x=strikes,
+ y=expiries,
+ z=vol_matrix,
+ colorscale='Viridis'
 )])
 ```
 
@@ -102,9 +102,9 @@ fig = go.Figure(data=[go.Surface(
 ```python
 # Greeks Heatmap
 fig = px.imshow(
-    greeks_matrix,
-    color_continuous_scale='RdYlBu_r',
-    labels=dict(x="Strike", y="Symbol", color="Delta")
+ greeks_matrix,
+ color_continuous_scale='RdYlBu_r',
+ labels=dict(x="Strike", y="Symbol", color="Delta")
 )
 ```
 
@@ -112,19 +112,19 @@ fig = px.imshow(
 ```python
 # Live P&L Chart with auto-update
 if st.session_state.auto_refresh:
-    st.plotly_chart(create_live_pnl_chart())
-    time.sleep(refresh_interval)
-    st.rerun()
+ st.plotly_chart(create_live_pnl_chart())
+ time.sleep(refresh_interval)
+ st.rerun()
 ```
 
 ### Gauge Dashboards
 ```python
 # Risk Gauge
 fig = go.Figure(go.Indicator(
-    mode="gauge+number",
-    value=risk_utilization,
-    gauge={'axis': {'range': [None, 100]}},
-    title={'text': "Risk Utilization"}
+ mode="gauge+number",
+ value=risk_utilization,
+ gauge={'axis': {'range': [None, 100]}},
+ title={'text': "Risk Utilization"}
 ))
 ```
 
@@ -217,9 +217,9 @@ filtered_chain = filter_options_chain(options_data, min_volume, max_dte)
 # Report generation and download
 report_data = generate_portfolio_report()
 st.download_button(
-    "📥 Download Portfolio Report",
-    data=report_data,
-    file_name=f"portfolio_{datetime.now().strftime('%Y%m%d')}.csv"
+ "📥 Download Portfolio Report",
+ data=report_data,
+ file_name=f"portfolio_{datetime.now().strftime('%Y%m%d')}.csv"
 )
 ```
 

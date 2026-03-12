@@ -37,15 +37,15 @@ A comprehensive, institutional-grade options trading platform built with Streaml
 
 ```
 streamlit_options_platform/
-├── main.py                     # Main Streamlit application
+├── main.py # Main Streamlit application
 ├── utils/
-│   ├── data_provider.py        # Market data and options chains
-│   ├── pricing_engine.py       # Options pricing and Greeks
-│   ├── portfolio_manager.py    # Portfolio tracking and performance
-│   ├── market_analysis.py      # Market analysis and correlations
-│   └── visualization.py        # Chart generation utilities
-├── requirements.txt            # Python dependencies
-└── README.md                  # This file
+│ ├── data_provider.py # Market data and options chains
+│ ├── pricing_engine.py # Options pricing and Greeks
+│ ├── portfolio_manager.py # Portfolio tracking and performance
+│ ├── market_analysis.py # Market analysis and correlations
+│ └── visualization.py # Chart generation utilities
+├── requirements.txt # Python dependencies
+└── README.md # This file
 ```
 
 ## 🚦 Quick Start
@@ -153,18 +153,15 @@ alpha_vantage_key = "your_alpha_vantage_key"
 The platform uses custom CSS for professional styling:
 ```python
 st.markdown("""
-<style>
-    .main-header {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #1f77b4;
-    }
-
-    .metric-container {
-        background-color: #f0f2f6;
-        padding: 1rem;
-        border-radius: 0.5rem;
-    }
+<style>.main-header {
+ font-size: 2.5rem;
+ font-weight: bold;
+ color: #1f77b4;
+ }.metric-container {
+ background-color: #f0f2f6;
+ padding: 1rem;
+ border-radius: 0.5rem;
+ }
 </style>
 """, unsafe_allow_html=True)
 ```
@@ -173,17 +170,17 @@ st.markdown("""
 Extend the `ChartGenerator` class:
 ```python
 def create_custom_chart(self, data):
-    fig = go.Figure()
-    # Add your custom visualization
-    return fig
+ fig = go.Figure()
+ # Add your custom visualization
+ return fig
 ```
 
 ### Custom Alerts
 Implement custom alert logic:
 ```python
 def check_custom_risk_limits(portfolio_data):
-    if portfolio_data['delta'] > threshold:
-        st.error("🔴 Delta limit exceeded!")
+ if portfolio_data['delta'] > threshold:
+ st.error("🔴 Delta limit exceeded!")
 ```
 
 ## 📈 Key Features Deep Dive
@@ -193,16 +190,16 @@ def check_custom_risk_limits(portfolio_data):
 # Portfolio metrics with real-time updates
 col1, col2, col3, col4 = st.columns(4)
 with col1:
-    st.metric("Portfolio Delta", f"{delta:,.0f}", f"{delta_change:+.0f}")
+ st.metric("Portfolio Delta", f"{delta:,.0f}", f"{delta_change:+.0f}")
 ```
 
 ### Interactive Options Chain
 ```python
 # Color-coded options chain
 def color_options(row):
-    if row['Type'] == 'CALL':
-        color = 'lightgreen' if row['Strike'] < current_price else 'lightgray'
-    return [f'background-color: {color}'] * len(row)
+ if row['Type'] == 'CALL':
+ color = 'lightgreen' if row['Strike'] < current_price else 'lightgray'
+ return [f'background-color: {color}'] * len(row)
 
 styled_chain = options_chain.style.apply(color_options, axis=1)
 st.dataframe(styled_chain, use_container_width=True)
@@ -212,12 +209,12 @@ st.dataframe(styled_chain, use_container_width=True)
 ```python
 # Interactive 3D surface
 fig_3d = go.Figure(data=[
-    go.Surface(
-        x=strikes,
-        y=expiries,
-        z=vol_matrix,
-        colorscale='Viridis'
-    )
+ go.Surface(
+ x=strikes,
+ y=expiries,
+ z=vol_matrix,
+ colorscale='Viridis'
+ )
 ])
 st.plotly_chart(fig_3d, use_container_width=True)
 ```
@@ -226,9 +223,9 @@ st.plotly_chart(fig_3d, use_container_width=True)
 ```python
 # Dynamic alert system
 if risk_violation:
-    st.error(f"🔴 Risk Limit Violation: {violation_details}")
+ st.error(f"🔴 Risk Limit Violation: {violation_details}")
 elif unusual_activity:
-    st.warning(f"🟡 Unusual Activity: {activity_details}")
+ st.warning(f"🟡 Unusual Activity: {activity_details}")
 ```
 
 ## 🔧 Advanced Features
@@ -237,12 +234,12 @@ elif unusual_activity:
 ```python
 # Persistent data across interactions
 if 'portfolio_data' not in st.session_state:
-    st.session_state.portfolio_data = {}
+ st.session_state.portfolio_data = {}
 
 # Real-time updates
 if st.session_state.auto_refresh:
-    time.sleep(refresh_interval)
-    st.rerun()
+ time.sleep(refresh_interval)
+ st.rerun()
 ```
 
 ### File Upload and Analysis
@@ -250,8 +247,8 @@ if st.session_state.auto_refresh:
 # Portfolio data upload
 uploaded_file = st.file_uploader("Upload Portfolio Data", type=['csv', 'xlsx'])
 if uploaded_file:
-    df = pd.read_csv(uploaded_file)
-    analyze_portfolio(df)
+ df = pd.read_csv(uploaded_file)
+ analyze_portfolio(df)
 ```
 
 ### Export Functionality
@@ -259,10 +256,10 @@ if uploaded_file:
 # Generate and download reports
 report_data = generate_portfolio_report()
 st.download_button(
-    label="📥 Download Report",
-    data=report_data,
-    file_name=f"portfolio_report_{datetime.now().strftime('%Y%m%d')}.csv",
-    mime='text/csv'
+ label="📥 Download Report",
+ data=report_data,
+ file_name=f"portfolio_report_{datetime.now().strftime('%Y%m%d')}.csv",
+ mime='text/csv'
 )
 ```
 
@@ -270,17 +267,17 @@ st.download_button(
 
 ### Caching for Performance
 ```python
-@st.cache_data(ttl=300)  # Cache for 5 minutes
+@st.cache_data(ttl=300) # Cache for 5 minutes
 def load_market_data(symbol):
-    return fetch_expensive_data(symbol)
+ return fetch_expensive_data(symbol)
 ```
 
 ### Efficient Updates
 ```python
 # Selective updates
 if st.session_state.get('last_update_time', 0) < time.time() - 60:
-    update_portfolio_data()
-    st.session_state.last_update_time = time.time()
+ update_portfolio_data()
+ st.session_state.last_update_time = time.time()
 ```
 
 ## 🧪 Testing
@@ -317,10 +314,10 @@ streamlit run main.py --server.port 8501
 FROM python:3.9-slim
 
 WORKDIR /app
-COPY requirements.txt .
+COPY requirements.txt.
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY..
 
 EXPOSE 8501
 
@@ -347,17 +344,17 @@ The platform is automatically mobile-responsive thanks to Streamlit's built-in r
 ```python
 # Simple authentication
 def check_authentication():
-    if 'authenticated' not in st.session_state:
-        st.session_state.authenticated = False
+ if 'authenticated' not in st.session_state:
+ st.session_state.authenticated = False
 
-    if not st.session_state.authenticated:
-        password = st.text_input("Password", type="password")
-        if password == st.secrets["app_password"]:
-            st.session_state.authenticated = True
-            st.rerun()
-        else:
-            st.error("Invalid password")
-            st.stop()
+ if not st.session_state.authenticated:
+ password = st.text_input("Password", type="password")
+ if password == st.secrets["app_password"]:
+ st.session_state.authenticated = True
+ st.rerun()
+ else:
+ st.error("Invalid password")
+ st.stop()
 ```
 
 ## 📈 Future Enhancements

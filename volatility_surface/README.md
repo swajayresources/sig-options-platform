@@ -18,17 +18,17 @@ This framework provides institutional-grade volatility surface modeling capabili
 ```
 volatility_surface/
 ├── src/
-│   ├── surface_models.py           # Core SVI/SABR models
-│   ├── calibration_engine.py       # Real-time calibration system
-│   ├── market_microstructure.py    # Market structure modeling
-│   ├── interpolation_methods.py    # Advanced interpolation techniques
-│   ├── arbitrage_detection.py      # Arbitrage monitoring system
-│   ├── model_validation.py         # Validation and selection framework
-│   ├── surface_visualization.py    # Professional visualization suite
-│   ├── testing_framework.py        # Comprehensive testing system
-│   └── volatility_framework.py     # Main integration interface
-├── README.md                       # This file
-└── requirements.txt               # Dependencies
+│ ├── surface_models.py # Core SVI/SABR models
+│ ├── calibration_engine.py # Real-time calibration system
+│ ├── market_microstructure.py # Market structure modeling
+│ ├── interpolation_methods.py # Advanced interpolation techniques
+│ ├── arbitrage_detection.py # Arbitrage monitoring system
+│ ├── model_validation.py # Validation and selection framework
+│ ├── surface_visualization.py # Professional visualization suite
+│ ├── testing_framework.py # Comprehensive testing system
+│ └── volatility_framework.py # Main integration interface
+├── README.md # This file
+└── requirements.txt # Dependencies
 ```
 
 ## 🚀 Quick Start
@@ -61,11 +61,11 @@ from volatility_framework import VolatilitySurfaceFramework, FrameworkConfig
 
 # Custom configuration
 config = FrameworkConfig(
-    preferred_models=['svi', 'sabr'],
-    calibration_frequency='realtime',
-    enable_arbitrage_monitoring=True,
-    arbitrage_tolerance=0.005,
-    cross_validation_folds=10
+ preferred_models=['svi', 'sabr'],
+ calibration_frequency='realtime',
+ enable_arbitrage_monitoring=True,
+ arbitrage_tolerance=0.005,
+ cross_validation_folds=10
 )
 
 framework = VolatilitySurfaceFramework(config)
@@ -109,9 +109,9 @@ vol = model.calculate_volatility(log_moneyness=0.1, expiry=0.25)
 from calibration_engine import RealTimeCalibrationEngine, CalibrationConfig
 
 config = CalibrationConfig(
-    optimization_method='differential_evolution',
-    cross_validation_folds=5,
-    regularization_strength=0.01
+ optimization_method='differential_evolution',
+ cross_validation_folds=5,
+ regularization_strength=0.01
 )
 
 engine = RealTimeCalibrationEngine(config)
@@ -145,16 +145,16 @@ weighted_vol = vwv.calculate_volume_weighted_volatility(quotes, expiry=0.25)
 from arbitrage_detection import ArbitrageMonitoringSystem, MonitoringConfig
 
 config = MonitoringConfig(
-    calendar_spread_tolerance=0.01,
-    butterfly_spread_tolerance=0.005,
-    enable_alerts=True
+ calendar_spread_tolerance=0.01,
+ butterfly_spread_tolerance=0.005,
+ enable_alerts=True
 )
 
 monitor = ArbitrageMonitoringSystem(config)
 violations = monitor.monitor_surface(quotes)
 
 for violation in violations:
-    print(f"Arbitrage detected: {violation.violation_type} at K={violation.strike}")
+ print(f"Arbitrage detected: {violation.violation_type} at K={violation.strike}")
 ```
 
 **Arbitrage Checks**:
@@ -190,8 +190,8 @@ metrics = validator.validate(model, train_quotes, test_quotes)
 # Model comparison
 selector = ModelSelectionFramework()
 best_name, best_model, comparison = selector.select_best_model(
-    {'svi': SVIModel(), 'sabr': SABRModel()},
-    quotes
+ {'svi': SVIModel(), 'sabr': SABRModel()},
+ quotes
 )
 
 # Backtesting
@@ -246,11 +246,11 @@ stress_result = stress_tester.stress_test_data_volume(SVIModel, max_quotes=5000)
 ```python
 # Generate realistic test data
 test_quotes = TestDataGenerator.generate_synthetic_quotes(
-    n_strikes=20,
-    n_expiries=10,
-    base_vol=0.2,
-    skew_param=-0.1,
-    seed=42
+ n_strikes=20,
+ n_expiries=10,
+ base_vol=0.2,
+ skew_param=-0.1,
+ seed=42
 )
 
 # Market stress scenarios
@@ -264,10 +264,10 @@ stress_scenarios = TestDataGenerator.generate_market_stress_scenarios()
 ```python
 # Set up real-time monitoring
 config = FrameworkConfig(
-    calibration_frequency='realtime',
-    recalibration_threshold=0.05,
-    enable_arbitrage_monitoring=True,
-    alert_on_violations=True
+ calibration_frequency='realtime',
+ recalibration_threshold=0.05,
+ enable_arbitrage_monitoring=True,
+ alert_on_violations=True
 )
 
 framework = VolatilitySurfaceFramework(config)
@@ -285,10 +285,10 @@ framework = VolatilitySurfaceFramework(config)
 validation_results = framework.run_validation_suite()
 
 for model_name, metrics in validation_results.items():
-    print(f"{model_name}:")
-    print(f"  RMSE: {metrics['cross_validation']['rmse']:.6f}")
-    print(f"  R²: {metrics['cross_validation']['r_squared']:.4f}")
-    print(f"  Calibration Time: {metrics['cross_validation']['calibration_time']:.3f}s")
+ print(f"{model_name}:")
+ print(f" RMSE: {metrics['cross_validation']['rmse']:.6f}")
+ print(f" R²: {metrics['cross_validation']['r_squared']:.4f}")
+ print(f" Calibration Time: {metrics['cross_validation']['calibration_time']:.3f}s")
 ```
 
 ### Surface Health Monitoring
@@ -308,36 +308,36 @@ print(f"Vol of Vol: {report['surface_analytics']['svi']['vol_of_vol']:.4f}")
 
 ```python
 config = FrameworkConfig(
-    # Model preferences
-    preferred_models=['svi', 'sabr'],
-    default_model='svi',
+ # Model preferences
+ preferred_models=['svi', 'sabr'],
+ default_model='svi',
 
-    # Calibration settings
-    calibration_frequency='realtime',  # 'realtime', 'hourly', 'daily'
-    recalibration_threshold=0.05,      # 5% volatility change threshold
-    min_quotes_for_calibration=10,
+ # Calibration settings
+ calibration_frequency='realtime', # 'realtime', 'hourly', 'daily'
+ recalibration_threshold=0.05, # 5% volatility change threshold
+ min_quotes_for_calibration=10,
 
-    # Market microstructure
-    enable_microstructure_modeling=True,
-    bid_ask_modeling=True,
-    volume_weighting=True,
+ # Market microstructure
+ enable_microstructure_modeling=True,
+ bid_ask_modeling=True,
+ volume_weighting=True,
 
-    # Risk management
-    enable_arbitrage_monitoring=True,
-    arbitrage_tolerance=0.01,          # 1% tolerance
-    alert_on_violations=True,
+ # Risk management
+ enable_arbitrage_monitoring=True,
+ arbitrage_tolerance=0.01, # 1% tolerance
+ alert_on_violations=True,
 
-    # Interpolation
-    adaptive_interpolation=True,
-    default_interpolation_method='cubic_spline',
+ # Interpolation
+ adaptive_interpolation=True,
+ default_interpolation_method='cubic_spline',
 
-    # Validation
-    cross_validation_folds=5,
-    backtest_lookback_days=30,
+ # Validation
+ cross_validation_folds=5,
+ backtest_lookback_days=30,
 
-    # Visualization
-    enable_visualization=True,
-    interactive_plots=True
+ # Visualization
+ enable_visualization=True,
+ interactive_plots=True
 )
 ```
 
@@ -355,15 +355,15 @@ seaborn>=0.11.0
 
 ### Optional Dependencies
 ```
-plotly>=5.0.0          # Interactive visualizations
-jupyter>=1.0.0         # Notebook support
-numba>=0.50.0          # Performance optimization
+plotly>=5.0.0 # Interactive visualizations
+jupyter>=1.0.0 # Notebook support
+numba>=0.50.0 # Performance optimization
 ```
 
 ### Installation
 ```bash
 pip install numpy pandas scipy scikit-learn matplotlib seaborn
-pip install plotly  # For interactive plots
+pip install plotly # For interactive plots
 ```
 
 ## 🎨 Visualization Examples
@@ -379,7 +379,7 @@ fig = visualizer.plot_surface_3d(surface_data, title="SVI Volatility Surface")
 ```python
 # Plot smile evolution across expiries
 quotes_by_expiry = {expiry: [q for q in quotes if q.expiry == expiry]
-                    for expiry in set(q.expiry for q in quotes)}
+ for expiry in set(q.expiry for q in quotes)}
 fig = visualizer.plot_volatility_smile_evolution(quotes_by_expiry)
 ```
 
@@ -387,8 +387,8 @@ fig = visualizer.plot_volatility_smile_evolution(quotes_by_expiry)
 ```python
 # Compare base surface with stressed scenarios
 stressed_surfaces = {
-    'High Vol': prepare_surface_data(high_vol_quotes, model),
-    'Crash': prepare_surface_data(crash_quotes, model)
+ 'High Vol': prepare_surface_data(high_vol_quotes, model),
+ 'Crash': prepare_surface_data(crash_quotes, model)
 }
 fig = visualizer.plot_risk_scenarios(base_surface, stressed_surfaces)
 ```

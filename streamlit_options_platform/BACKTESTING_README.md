@@ -44,21 +44,21 @@ pip install streamlit plotly pandas numpy scipy scikit-learn psutil
 ### Directory Structure
 ```
 backtesting/
-├── __init__.py                    # Framework initialization
-├── backtesting_engine.py          # Core backtesting engine
-├── strategy_validator.py          # Strategy validation framework
-├── performance_analytics.py       # Performance analysis tools
-├── monte_carlo_engine.py          # Monte Carlo simulation
-└── backtesting_dashboard.py       # Streamlit dashboard
+├── __init__.py # Framework initialization
+├── backtesting_engine.py # Core backtesting engine
+├── strategy_validator.py # Strategy validation framework
+├── performance_analytics.py # Performance analysis tools
+├── monte_carlo_engine.py # Monte Carlo simulation
+└── backtesting_dashboard.py # Streamlit dashboard
 
 tests/
 ├── __init__.py
-├── test_backtesting.py            # Comprehensive test suite
-└── run_tests.py                   # Automated test runner
+├── test_backtesting.py # Comprehensive test suite
+└── run_tests.py # Automated test runner
 
 strategies/
 ├── __init__.py
-└── example_strategies.py          # Example strategy implementations
+└── example_strategies.py # Example strategy implementations
 ```
 
 ## 📋 Quick Start
@@ -74,28 +74,28 @@ engine = BacktestingEngine(initial_capital=1000000)
 
 # Define strategy
 def simple_strategy(market_data, positions, capital):
-    orders = []
+ orders = []
 
-    if len(positions) == 0:
-        # Buy ATM straddle
-        strike = market_data.underlying_price
-        expiry = market_data.timestamp + timedelta(days=30)
+ if len(positions) == 0:
+ # Buy ATM straddle
+ strike = market_data.underlying_price
+ expiry = market_data.timestamp + timedelta(days=30)
 
-        call_order = Order(
-            OptionContract("SPY", strike, expiry, OptionType.CALL),
-            quantity=10,
-            order_type=OrderType.BUY
-        )
+ call_order = Order(
+ OptionContract("SPY", strike, expiry, OptionType.CALL),
+ quantity=10,
+ order_type=OrderType.BUY
+ )
 
-        put_order = Order(
-            OptionContract("SPY", strike, expiry, OptionType.PUT),
-            quantity=10,
-            order_type=OrderType.BUY
-        )
+ put_order = Order(
+ OptionContract("SPY", strike, expiry, OptionType.PUT),
+ quantity=10,
+ order_type=OrderType.BUY
+ )
 
-        orders.extend([call_order, put_order])
+ orders.extend([call_order, put_order])
 
-    return orders
+ return orders
 
 # Run backtest
 start_date = datetime(2023, 1, 1)
@@ -119,10 +119,10 @@ validator = StrategyValidator()
 
 # Run comprehensive validation
 validation_result = validator.validate_strategy(
-    strategy_function=simple_strategy,
-    start_date=datetime(2023, 1, 1),
-    end_date=datetime(2023, 12, 31),
-    strategy_name="Simple Straddle"
+ strategy_function=simple_strategy,
+ start_date=datetime(2023, 1, 1),
+ end_date=datetime(2023, 12, 31),
+ strategy_name="Simple Straddle"
 )
 
 # Generate validation report
@@ -144,9 +144,9 @@ mc_engine = MonteCarloEngine(num_simulations=1000)
 
 # Run Monte Carlo analysis
 mc_summary = mc_engine.run_monte_carlo_backtest(
-    strategy_function=simple_strategy,
-    start_date=datetime(2023, 1, 1),
-    end_date=datetime(2023, 12, 31)
+ strategy_function=simple_strategy,
+ start_date=datetime(2023, 1, 1),
+ end_date=datetime(2023, 12, 31)
 )
 
 # Access results
@@ -166,14 +166,14 @@ analyzer = PerformanceAnalyzer()
 
 # Calculate comprehensive metrics
 metrics = analyzer.calculate_comprehensive_metrics(
-    equity_curve=results['equity_curve'],
-    trades=results['trades']
+ equity_curve=results['equity_curve'],
+ trades=results['trades']
 )
 
 # Greeks attribution analysis
 attribution = analyzer.analyze_greeks_attribution(
-    greeks_history=results['greeks_history'],
-    underlying_prices=underlying_price_series
+ greeks_history=results['greeks_history'],
+ underlying_prices=underlying_price_series
 )
 
 print(f"Delta P&L: ${attribution.delta_pnl:.2f}")
@@ -229,13 +229,13 @@ python -m unittest tests.test_backtesting.TestStrategyValidator
 from strategies import DeltaNeutralStrategy
 
 strategy = DeltaNeutralStrategy(
-    target_delta=0.0,
-    rebalance_threshold=10.0,
-    max_position_size=0.1
+ target_delta=0.0,
+ rebalance_threshold=10.0,
+ max_position_size=0.1
 )
 
 def delta_neutral_orders(market_data, positions, capital):
-    return strategy.generate_orders(market_data, positions, capital)
+ return strategy.generate_orders(market_data, positions, capital)
 ```
 
 ### Iron Condor Strategy
@@ -243,14 +243,14 @@ def delta_neutral_orders(market_data, positions, capital):
 from strategies import IronCondorStrategy
 
 strategy = IronCondorStrategy(
-    wing_width=10.0,
-    target_dte=45,
-    profit_target=0.5,
-    stop_loss=2.0
+ wing_width=10.0,
+ target_dte=45,
+ profit_target=0.5,
+ stop_loss=2.0
 )
 
 def iron_condor_orders(market_data, positions, capital):
-    return strategy.generate_orders(market_data, positions, capital)
+ return strategy.generate_orders(market_data, positions, capital)
 ```
 
 ### Volatility Trading Strategy
@@ -258,13 +258,13 @@ def iron_condor_orders(market_data, positions, capital):
 from strategies import VolatilityTradingStrategy
 
 strategy = VolatilityTradingStrategy(
-    vol_threshold_low=0.15,
-    vol_threshold_high=0.35,
-    target_dte=30
+ vol_threshold_low=0.15,
+ vol_threshold_high=0.35,
+ target_dte=30
 )
 
 def volatility_orders(market_data, positions, capital):
-    return strategy.generate_orders(market_data, positions, capital)
+ return strategy.generate_orders(market_data, positions, capital)
 ```
 
 ## 📈 Performance Metrics
@@ -292,29 +292,29 @@ def volatility_orders(market_data, positions, capital):
 ### Backtesting Parameters
 ```python
 engine = BacktestingEngine(
-    initial_capital=1000000,           # Starting capital
-    commission_per_contract=1.0,       # Commission cost
-    slippage_pct=0.005,               # Slippage percentage
-    bid_ask_spread_pct=0.02,          # Bid-ask spread
-    market_impact_factor=0.001,        # Market impact cost
-    max_position_size=0.1,            # Maximum position size
-    max_portfolio_delta=1000,         # Delta limit
-    max_portfolio_gamma=500,          # Gamma limit
-    max_portfolio_vega=10000          # Vega limit
+ initial_capital=1000000, # Starting capital
+ commission_per_contract=1.0, # Commission cost
+ slippage_pct=0.005, # Slippage percentage
+ bid_ask_spread_pct=0.02, # Bid-ask spread
+ market_impact_factor=0.001, # Market impact cost
+ max_position_size=0.1, # Maximum position size
+ max_portfolio_delta=1000, # Delta limit
+ max_portfolio_gamma=500, # Gamma limit
+ max_portfolio_vega=10000 # Vega limit
 )
 ```
 
 ### Validation Parameters
 ```python
 validator = StrategyValidator(
-    min_sample_size=252               # Minimum data points
+ min_sample_size=252 # Minimum data points
 )
 ```
 
 ### Monte Carlo Parameters
 ```python
 mc_engine = MonteCarloEngine(
-    num_simulations=1000              # Number of simulations
+ num_simulations=1000 # Number of simulations
 )
 ```
 
@@ -323,32 +323,32 @@ mc_engine = MonteCarloEngine(
 ### Custom Market Scenarios
 ```python
 custom_scenarios = {
-    'volatility_regime': {
-        'low_vol': {'prob': 0.3, 'vol_multiplier': 0.6},
-        'high_vol': {'prob': 0.2, 'vol_multiplier': 2.0}
-    },
-    'jump_risk': {
-        'prob_jump': 0.02,
-        'jump_mean': -0.02,
-        'jump_std': 0.05
-    }
+ 'volatility_regime': {
+ 'low_vol': {'prob': 0.3, 'vol_multiplier': 0.6},
+ 'high_vol': {'prob': 0.2, 'vol_multiplier': 2.0}
+ },
+ 'jump_risk': {
+ 'prob_jump': 0.02,
+ 'jump_mean': -0.02,
+ 'jump_std': 0.05
+ }
 }
 
 mc_results = mc_engine.run_monte_carlo_backtest(
-    strategy_function=your_strategy,
-    start_date=start_date,
-    end_date=end_date,
-    market_scenarios=custom_scenarios
+ strategy_function=your_strategy,
+ start_date=start_date,
+ end_date=end_date,
+ market_scenarios=custom_scenarios
 )
 ```
 
 ### Performance Benchmarking
 ```python
-benchmark_data = [...]  # Benchmark price series
+benchmark_data = [...] # Benchmark price series
 
 comparison = analyzer.benchmark_comparison(
-    strategy_metrics=performance_metrics,
-    benchmark_data=benchmark_data
+ strategy_metrics=performance_metrics,
+ benchmark_data=benchmark_data
 )
 
 print(f"Excess Return: {comparison['excess_return']:.2f}%")
@@ -358,8 +358,8 @@ print(f"Information Ratio: {comparison['information_ratio']:.3f}")
 ### Risk Report Generation
 ```python
 risk_report = analyzer.create_risk_report(
-    equity_curve=results['equity_curve'],
-    greeks_history=results['greeks_history']
+ equity_curve=results['equity_curve'],
+ greeks_history=results['greeks_history']
 )
 
 print(f"95% VaR: ${risk_report['var_95']:.2f}")

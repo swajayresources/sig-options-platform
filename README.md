@@ -1,6 +1,6 @@
-# SIG Options Market Making Platform
+# Options Market Making Platform
 
-Sophisticated options trading system built for the SIG internship application. Implements a complete options market making platform with real-time Greeks, implied volatility surfaces, and automated trading strategies.
+Sophisticated options trading system built. Implements a complete options market making platform with real-time Greeks, implied volatility surfaces, and automated trading strategies.
 
 ## What It Does
 
@@ -62,15 +62,15 @@ streamlit run main.py
 ```
 SIG3/
 ├── streamlit_options_platform/
-│   ├── main.py                # Entry point — run this
-│   ├── demo.py                # Standalone demo
-│   ├── utils/                 # Pricing, vol surface, data utils
-│   ├── strategies/            # Market making strategies
-│   ├── backtesting/           # Strategy backtesting
-│   └── demo_data/             # Sample data for demo mode
-├── cpp_engine/                # High-performance C++ pricing (optional)
-├── python_api/                # Python wrappers
-├── market_data/               # Data integration
-├── risk_management/           # Hedging tools
-└── web_interface/             # Alternative web UI
+│ ├── main.py # Entry point — run this
+│ ├── demo.py # Standalone demo
+│ ├── utils/ # Pricing, vol surface, data utils
+│ ├── strategies/ # Market making strategies
+│ ├── backtesting/ # Strategy backtesting
+│ └── demo_data/ # Sample data for demo mode
+├── cpp_engine/ # High-performance C++ pricing (optional)
+├── python_api/ # Python wrappers
+├── market_data/ # Data integration
+├── risk_management/ # Hedging tools
+└── web_interface/ # Alternative web UI
 ```

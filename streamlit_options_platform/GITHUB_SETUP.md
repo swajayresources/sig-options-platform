@@ -5,13 +5,13 @@
 1. **Go to GitHub**: Open [github.com](https://github.com) in your browser
 2. **Sign in** to your GitHub account
 3. **Create New Repository**:
-   - Click the "+" icon in the top right corner
-   - Select "New repository"
-   - Repository name: `professional-options-trading-platform`
-   - Description: `Institutional-grade options trading platform with comprehensive backtesting, real-time analytics, and advanced risk management capabilities.`
-   - Make it **Public** (recommended for portfolio projects)
-   - **DO NOT** initialize with README, .gitignore, or license (we already have these)
-   - Click "Create repository"
+ - Click the "+" icon in the top right corner
+ - Select "New repository"
+ - Repository name: `professional-options-trading-platform`
+ - Description: `Institutional-grade options trading platform with comprehensive backtesting, real-time analytics, and advanced risk management capabilities.`
+ - Make it **Public** (recommended for portfolio projects)
+ - **DO NOT** initialize with README,.gitignore, or license (we already have these)
+ - Click "Create repository"
 
 ## Step 2: Connect Local Repository to GitHub
 
@@ -36,19 +36,19 @@ git push -u origin main
 After pushing, go to your repository on GitHub and:
 
 1. **Add Topics/Tags**:
-   - Click the ⚙️ settings icon next to "About"
-   - Add topics: `options-trading`, `streamlit`, `python`, `quantitative-finance`, `backtesting`, `risk-management`, `monte-carlo`, `black-scholes`, `portfolio-management`, `trading-algorithms`
+ - Click the ⚙️ settings icon next to "About"
+ - Add topics: `options-trading`, `streamlit`, `python`, `quantitative-finance`, `backtesting`, `risk-management`, `monte-carlo`, `black-scholes`, `portfolio-management`, `trading-algorithms`
 
 2. **Enable GitHub Pages** (to showcase your project):
-   - Go to Settings → Pages
-   - Source: Deploy from a branch
-   - Branch: main
-   - Folder: / (root)
-   - Save
+ - Go to Settings → Pages
+ - Source: Deploy from a branch
+ - Branch: main
+ - Folder: / (root)
+ - Save
 
 3. **Add Repository Description**:
-   - In the "About" section, add: "Institutional-grade options trading platform with comprehensive backtesting, real-time analytics, and advanced risk management capabilities. Built with Python and Streamlit."
-   - Add website: Your GitHub Pages URL (will be available after enabling Pages)
+ - In the "About" section, add: "Institutional-grade options trading platform with comprehensive backtesting, real-time analytics, and advanced risk management capabilities. Built with Python and Streamlit."
+ - Add website: Your GitHub Pages URL (will be available after enabling Pages)
 
 ## Step 4: Create a Stunning Repository
 
@@ -105,25 +105,25 @@ name: Tests
 on: [push, pull_request]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8, 3.9, 3.10, 3.11]
+ test:
+ runs-on: ubuntu-latest
+ strategy:
+ matrix:
+ python-version: [3.8, 3.9, 3.10, 3.11]
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Run tests
-      run: |
-        python tests/run_tests.py
+ steps:
+ - uses: actions/checkout@v3
+ - name: Set up Python ${{ matrix.python-version }}
+ uses: actions/setup-python@v3
+ with:
+ python-version: ${{ matrix.python-version }}
+ - name: Install dependencies
+ run: |
+ python -m pip install --upgrade pip
+ pip install -r requirements.txt
+ - name: Run tests
+ run: |
+ python tests/run_tests.py
 ```
 
 ## Your Repository is Ready! 🎉
