@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIG Options Trading Platform</title>
+
+    <!-- React and Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- D3.js for advanced visualizations -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Socket.io for real-time updates -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+    <!-- Material UI Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+
+    <!-- Custom Styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00ff88;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #00ff88;
+        }
+
+        .options-chain {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .chain-header {
+            background: rgba(0, 255, 136, 0.2);
+            padding: 10px 15px;
+            font-weight: 500;
+            display: grid;
+            grid-template-columns: 1fr 80px 80px 80px 80px 80px 80px 1fr;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .chain-row {
+            padding: 8px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: grid;
+            grid-template-columns: 1fr 80px 80px 80px 80px 80px 80px 1fr;
+            gap: 10px;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .chain-row:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .greeks-display {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .greek-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .greek-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00ff88;
+        }
+
+        .greek-label {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .pnl-display {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .positive { color: #00ff88; }
+        .negative { color: #ff4757; }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .control-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .control-input {
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 14px;
+        }
+
+        .control-input:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00ff88, #00d4aa);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-connected { background: #00ff88; }
+        .status-disconnected { background: #ff4757; }
+
+        .chart-container {
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        .volatility-surface {
+            height: 500px;
+            margin-top: 20px;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .updating {
+            animation: pulse 1s infinite;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background: rgba(0, 255, 136, 0.2);
+            border-left: 4px solid #00ff88;
+        }
+
+        .risk-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Mock data and API functions
+        const mockOptionsChain = [
+            { strike: 390, callBid: 12.50, callAsk: 12.80, putBid: 2.10, putAsk: 2.30, callVol: 0.25, putVol: 0.24, callDelta: 0.75, putDelta: -0.25 },
+            { strike: 395, callBid: 9.20, callAsk: 9.50, putBid: 3.10, putAsk: 3.40, callVol: 0.24, putVol: 0.25, callDelta: 0.65, putDelta: -0.35 },
+            { strike: 400, callBid: 6.50, callAsk: 6.80, putBid: 4.80, putAsk: 5.10, callVol: 0.23, putVol: 0.23, callDelta: 0.55, putDelta: -0.45 },
+            { strike: 405, callBid: 4.20, callAsk: 4.50, putBid: 7.10, putAsk: 7.40, callVol: 0.24, putVol: 0.24, callDelta: 0.42, putDelta: -0.58 },
+            { strike: 410, callBid: 2.60, callAsk: 2.90, putBid: 10.50, putAsk: 10.80, callVol: 0.25, putVol: 0.26, callDelta: 0.28, putDelta: -0.72 }
+        ];
+
+        // Main Application Component
+        function App() {
+            const [activeTab, setActiveTab] = useState('dashboard');
+            const [isConnected, setIsConnected] = useState(true);
+            const [portfolioGreeks, setPortfolioGreeks] = useState({
+                delta: 125.4,
+                gamma: 45.2,
+                theta: -12.8,
+                vega: 234.5,
+                rho: 15.3
+            });
+            const [currentPnL, setCurrentPnL] = useState(25432.18);
+            const [selectedSymbol, setSelectedSymbol] = useState('SPY');
+
+            return (
+                <div className="app-container">
+                    <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+                    <div className="main-content">
+                        <Header isConnected={isConnected} selectedSymbol={selectedSymbol} />
+                        {activeTab === 'dashboard' && (
+                            <Dashboard
+                                portfolioGreeks={portfolioGreeks}
+                                currentPnL={currentPnL}
+                                selectedSymbol={selectedSymbol}
+                                setSelectedSymbol={setSelectedSymbol}
+                            />
+                        )}
+                        {activeTab === 'options-chain' && <OptionsChainView />}
+                        {activeTab === 'volatility' && <VolatilitySurfaceView />}
+                        {activeTab === 'risk' && <RiskManagementView />}
+                        {activeTab === 'portfolio' && <PortfolioView />}
+                    </div>
+                </div>
+            );
+        }
+
+        // Sidebar Navigation
+        function Sidebar({ activeTab, setActiveTab }) {
+            const navItems = [
+                { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
+                { id: 'options-chain', label: 'Options Chain', icon: 'list' },
+                { id: 'volatility', label: 'Vol Surface', icon: 'show_chart' },
+                { id: 'risk', label: 'Risk Management', icon: 'security' },
+                { id: 'portfolio', label: 'Portfolio', icon: 'pie_chart' }
+            ];
+
+            return (
+                <div className="sidebar">
+                    <div className="logo">SIG Options</div>
+                    <div style={{ marginTop: '40px' }}>
+                        {navItems.map(item => (
+                            <div
+                                key={item.id}
+                                className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
+                                onClick={() => setActiveTab(item.id)}
+                            >
+                                <span className="material-icons">{item.icon}</span>
+                                {item.label}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        // Header Component
+        function Header({ isConnected, selectedSymbol }) {
+            return (
+                <div className="header">
+                    <div className="logo">Options Market Making Platform</div>
+                    <div className="user-info">
+                        <span className={`status-indicator ${isConnected ? 'status-connected' : 'status-disconnected'}`}></span>
+                        <span>{isConnected ? 'Connected' : 'Disconnected'}</span>
+                        <span>|</span>
+                        <span>Symbol: {selectedSymbol}</span>
+                        <span>|</span>
+                        <span>{new Date().toLocaleTimeString()}</span>
+                    </div>
+                </div>
+            );
+        }
+
+        // Dashboard Component
+        function Dashboard({ portfolioGreeks, currentPnL, selectedSymbol, setSelectedSymbol }) {
+            return (
+                <div>
+                    <div className="controls">
+                        <div className="control-group">
+                            <label className="control-label">Symbol</label>
+                            <select
+                                className="control-input"
+                                value={selectedSymbol}
+                                onChange={(e) => setSelectedSymbol(e.target.value)}
+                            >
+                                <option value="SPY">SPY</option>
+                                <option value="QQQ">QQQ</option>
+                                <option value="IWM">IWM</option>
+                                <option value="AAPL">AAPL</option>
+                            </select>
+                        </div>
+                        <button className="btn btn-primary">Update Quotes</button>
+                        <button className="btn btn-secondary">Market Making ON</button>
+                    </div>
+
+                    <div className="dashboard-grid">
+                        <div className="card">
+                            <div className="card-title">Portfolio Greeks</div>
+                            <GreeksDisplay greeks={portfolioGreeks} />
+                        </div>
+                        <div className="card">
+                            <div className="card-title">P&L</div>
+                            <div className={`pnl-display ${currentPnL >= 0 ? 'positive' : 'negative'}`}>
+                                ${currentPnL.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                            </div>
+                            <PnLChart />
+                        </div>
+                    </div>
+
+                    <div className="card">
+                        <div className="card-title">Live Options Chain - {selectedSymbol}</div>
+                        <OptionsChain data={mockOptionsChain} />
+                    </div>
+                </div>
+            );
+        }
+
+        // Greeks Display Component
+        function GreeksDisplay({ greeks }) {
+            return (
+                <div className="greeks-display">
+                    {Object.entries(greeks).map(([key, value]) => (
+                        <div key={key} className="greek-card">
+                            <div className="greek-value">{value}</div>
+                            <div className="greek-label">{key.toUpperCase()}</div>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
+        // Options Chain Component
+        function OptionsChain({ data }) {
+            return (
+                <div className="options-chain">
+                    <div className="chain-header">
+                        <div>CALLS</div>
+                        <div>Bid</div>
+                        <div>Ask</div>
+                        <div>Vol</div>
+                        <div>Strike</div>
+                        <div>Vol</div>
+                        <div>Bid</div>
+                        <div>PUTS</div>
+                    </div>
+                    {data.map((row, index) => (
+                        <div key={index} className="chain-row">
+                            <div></div>
+                            <div>{row.callBid}</div>
+                            <div>{row.callAsk}</div>
+                            <div>{(row.callVol * 100).toFixed(1)}%</div>
+                            <div style={{ fontWeight: 'bold', color: '#00ff88' }}>{row.strike}</div>
+                            <div>{(row.putVol * 100).toFixed(1)}%</div>
+                            <div>{row.putBid}</div>
+                            <div></div>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
+        // P&L Chart Component
+        function PnLChart() {
+            const canvasRef = useRef(null);
+
+            useEffect(() => {
+                if (canvasRef.current) {
+                    const ctx = canvasRef.current.getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: Array.from({length: 50}, (_, i) => i),
+                            datasets: [{
+                                label: 'P&L',
+                                data: Array.from({length: 50}, () => Math.random() * 1000 - 500),
+                                borderColor: '#00ff88',
+                                backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                                borderWidth: 2,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                y: {
+                                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                    ticks: { color: 'white' }
+                                },
+                                x: {
+                                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                    ticks: { color: 'white' }
+                                }
+                            }
+                        }
+                    });
+                }
+            }, []);
+
+            return <canvas ref={canvasRef} style={{ height: '200px' }} />;
+        }
+
+        // Options Chain View
+        function OptionsChainView() {
+            return (
+                <div className="card">
+                    <div className="card-title">Detailed Options Chain</div>
+                    <OptionsChain data={mockOptionsChain} />
+                </div>
+            );
+        }
+
+        // Volatility Surface View
+        function VolatilitySurfaceView() {
+            const surfaceRef = useRef(null);
+
+            useEffect(() => {
+                if (surfaceRef.current) {
+                    // Create 3D volatility surface using D3.js
+                    const container = d3.select(surfaceRef.current);
+                    container.selectAll("*").remove();
+
+                    const width = 800;
+                    const height = 500;
+                    const svg = container.append("svg")
+                        .attr("width", width)
+                        .attr("height", height);
+
+                    // Generate mock volatility surface data
+                    const strikes = d3.range(80, 121, 5);
+                    const expiries = d3.range(0.1, 2.1, 0.1);
+
+                    const data = [];
+                    strikes.forEach(strike => {
+                        expiries.forEach(expiry => {
+                            const moneyness = strike / 100; // Normalized
+                            const vol = 0.2 + 0.1 * Math.exp(-Math.pow(moneyness - 1, 2) / 0.1) +
+                                       0.05 * Math.sin(expiry * 3);
+                            data.push({ strike, expiry, vol });
+                        });
+                    });
+
+                    // Create heatmap
+                    const xScale = d3.scaleLinear()
+                        .domain(d3.extent(strikes))
+                        .range([50, width - 50]);
+
+                    const yScale = d3.scaleLinear()
+                        .domain(d3.extent(expiries))
+                        .range([height - 50, 50]);
+
+                    const colorScale = d3.scaleSequential(d3.interpolateViridis)
+                        .domain(d3.extent(data, d => d.vol));
+
+                    svg.selectAll("rect")
+                        .data(data)
+                        .enter()
+                        .append("rect")
+                        .attr("x", d => xScale(d.strike) - 2)
+                        .attr("y", d => yScale(d.expiry) - 2)
+                        .attr("width", 4)
+                        .attr("height", 4)
+                        .attr("fill", d => colorScale(d.vol))
+                        .attr("opacity", 0.8);
+
+                    // Add axes
+                    svg.append("g")
+                        .attr("transform", `translate(0, ${height - 50})`)
+                        .call(d3.axisBottom(xScale))
+                        .attr("color", "white");
+
+                    svg.append("g")
+                        .attr("transform", "translate(50, 0)")
+                        .call(d3.axisLeft(yScale))
+                        .attr("color", "white");
+                }
+            }, []);
+
+            return (
+                <div className="card">
+                    <div className="card-title">Implied Volatility Surface</div>
+                    <div ref={surfaceRef} className="volatility-surface"></div>
+                </div>
+            );
+        }
+
+        // Risk Management View
+        function RiskManagementView() {
+            const riskMetrics = {
+                var95: 15420,
+                maxDrawdown: -8.5,
+                sharpeRatio: 1.85,
+                deltaLimit: 1000,
+                gammaLimit: 500,
+                vegaLimit: 10000
+            };
+
+            return (
+                <div>
+                    <div className="card">
+                        <div className="card-title">Risk Metrics</div>
+                        <div className="risk-metrics">
+                            <div className="metric-item">
+                                <div className="metric-value">$15,420</div>
+                                <div className="metric-label">VaR (95%)</div>
+                            </div>
+                            <div className="metric-item">
+                                <div className="metric-value negative">-8.5%</div>
+                                <div className="metric-label">Max Drawdown</div>
+                            </div>
+                            <div className="metric-item">
+                                <div className="metric-value positive">1.85</div>
+                                <div className="metric-label">Sharpe Ratio</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="card" style={{ marginTop: '20px' }}>
+                        <div className="card-title">Position Limits</div>
+                        <div className="risk-metrics">
+                            <div className="metric-item">
+                                <div className="metric-value">125 / 1000</div>
+                                <div className="metric-label">Delta Exposure</div>
+                            </div>
+                            <div className="metric-item">
+                                <div className="metric-value">45 / 500</div>
+                                <div className="metric-label">Gamma Exposure</div>
+                            </div>
+                            <div className="metric-item">
+                                <div className="metric-value">234 / 10000</div>
+                                <div className="metric-label">Vega Exposure</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Portfolio View
+        function PortfolioView() {
+            const positions = [
+                { symbol: 'SPY 400C', quantity: 10, avgPrice: 6.50, currentPrice: 6.75, pnl: 250 },
+                { symbol: 'SPY 405P', quantity: -5, avgPrice: 7.20, currentPrice: 7.40, pnl: -100 },
+                { symbol: 'QQQ 350C', quantity: 15, avgPrice: 4.20, currentPrice: 4.35, pnl: 225 }
+            ];
+
+            return (
+                <div className="card">
+                    <div className="card-title">Current Positions</div>
+                    <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                            <thead>
+                                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.2)' }}>
+                                    <th style={{ padding: '10px', textAlign: 'left' }}>Symbol</th>
+                                    <th style={{ padding: '10px', textAlign: 'right' }}>Quantity</th>
+                                    <th style={{ padding: '10px', textAlign: 'right' }}>Avg Price</th>
+                                    <th style={{ padding: '10px', textAlign: 'right' }}>Current</th>
+                                    <th style={{ padding: '10px', textAlign: 'right' }}>P&L</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {positions.map((pos, index) => (
+                                    <tr key={index} style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                                        <td style={{ padding: '10px' }}>{pos.symbol}</td>
+                                        <td style={{ padding: '10px', textAlign: 'right' }}>{pos.quantity}</td>
+                                        <td style={{ padding: '10px', textAlign: 'right' }}>${pos.avgPrice}</td>
+                                        <td style={{ padding: '10px', textAlign: 'right' }}>${pos.currentPrice}</td>
+                                        <td style={{
+                                            padding: '10px',
+                                            textAlign: 'right',
+                                            color: pos.pnl >= 0 ? '#00ff88' : '#ff4757'
+                                        }}>
+                                            ${pos.pnl}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            );
+        }
+
+        // Render the app
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

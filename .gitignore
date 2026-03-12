@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+.venv/
+*.egg-info/
+
+# Streamlit
+.streamlit/
+
+# Build / compiled
+build/
+dist/
+*.so
+*.o
+*.exe
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
