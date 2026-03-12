@@ -74,3 +74,9 @@ SIG3/
 ├── risk_management/ # Hedging tools
 └── web_interface/ # Alternative web UI
 ```
+
+## Demo
+
+**[▶ Watch Demo Video](https://github.com/swajayresources/sig-options-platform/releases/download/v1.0.0/Options.Trading.Platform.-.Google.Chrome.2025-09-29.02-17-35.mp4)**
+
+> Full demo video available in the [Releases](https://github.com/swajayresources/sig-options-platform/releases/tag/v1.0.0) section.
